@@ -1,0 +1,11 @@
+ofxOsc
+ofxGLWarper
+ofxMSAInteractiveObject
+ofxSceneManager
+ofxSpriteSheetRenderer
+ofxTexturePacker
+ofxTween
+ofxXmlSettings
+ofxOpenCv
+ofxMacamPs3Eye
+ofxUI
