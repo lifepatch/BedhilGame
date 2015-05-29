@@ -1,0 +1,9 @@
+obj/osx/Release/src/main.d
+obj/osx/Release/src/ofApp.d
+obj/osx/Release/src/main.o
+obj/osx/Release/src/Obj2D.o
+obj/osx/Release/src/scene/sceneEnding.d
+obj/osx/Release/src/Obj2D.d
+bin/destruct.app
+obj/osx/Release/src/scene/sceneEnding.o
+obj/osx/Release/src/sensor
