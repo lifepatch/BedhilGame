@@ -1,8 +1,13 @@
 #pragma once
 
 #include "ofMain.h"
-#include "sceneOpening.h"
-#include "sceneLevel1.h"
+#include "ofxUI.h"
+#include "ofxMacamPs3Eye.h"
+
+
+#include "colortracker.h"
+#include "ofxPS3EyeGrabber.h"
+#include "ofxGLWarper.h"
 
 class ofApp : public ofBaseApp{
 
@@ -21,8 +26,25 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-        sceneOpening SceneOpening;
-        sceneLevel1 Level1;
+        //gui
+        ofxUISuperCanvas *gui0;
 
+        //webcam input
+       // ofVideoGrabber webcam;
+//       ofxMacamPs3Eye ps3eye;
+        ofxPS3EyeGrabber ps3eye;
+        ofTexture ps3img;
+        //ofImage ps3img;
+
+
+        //color tracker module
+        ColorTracker tracker;
+        TrackerParam trackerParam;
+
+        //contour finder/blob
+        ofxCvContourFinder 	contourFinder;
+
+        //warper module
+        ofxGLWarper warper;
 		
 };

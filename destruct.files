@@ -6,3 +6,10 @@ src/scene/sceneOpening.h
 src/scene/sceneOpening.cpp
 src/scene/sceneLevel1.h
 src/scene/sceneLevel1.cpp
+src/scene/sceneEnding.h
+src/scene/sceneEnding.cpp
+src/sprite
+src/sensor/colortracker.h
+src/sensor/colortracker.cpp
+src/Obj2D.h
+src/Obj2D.cpp
