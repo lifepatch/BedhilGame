@@ -10,3 +10,4 @@ ofxOpenCv
 ofxMacamPs3Eye
 ofxUI
 ofxPS3EyeGrabber
+ofxBlobTracker
