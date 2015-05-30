@@ -8,6 +8,10 @@
 #include "colortracker.h"
 #include "ofxPS3EyeGrabber.h"
 #include "ofxGLWarper.h"
+#include "ofxBlobTracker.h"
+
+
+#include "gedung.h"
 
 class ofApp : public ofBaseApp{
 
@@ -26,6 +30,12 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+
+
+        void blobAdded(ofxBlob &_blob);
+        void blobMoved(ofxBlob &_blob);
+        void blobDeleted(ofxBlob &_blob);
+
         //gui
         ofxUISuperCanvas *gui0;
 
@@ -38,13 +48,25 @@ class ofApp : public ofBaseApp{
 
 
         //color tracker module
-        ColorTracker tracker;
+        ColorTracker colorTracker;
         TrackerParam trackerParam;
 
         //contour finder/blob
         ofxCvContourFinder 	contourFinder;
+        //blob tracker
+        ofxBlobTracker blobTracker;
 
         //warper module
         ofxGLWarper warper;
 		
+        ofVec2f lastBlobPos;
+
+        //game assets
+
+        ofImage cityTex;
+        Gedung gedung1;
+
+        //sound
+
+        ofSoundPlayer startup, launch, explode, empty;
 };

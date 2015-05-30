@@ -13,3 +13,4 @@ src/sensor/colortracker.h
 src/sensor/colortracker.cpp
 src/Obj2D.h
 src/Obj2D.cpp
+src/gedung.h

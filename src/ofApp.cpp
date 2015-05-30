@@ -32,8 +32,27 @@ void ofApp::setup()
     gui0->autoSizeToFitWidgets();
 
 
+    ofAddListener(blobTracker.blobAdded, this, &ofApp::blobAdded);
+    ofAddListener(blobTracker.blobMoved, this, &ofApp::blobMoved);
+    ofAddListener(blobTracker.blobDeleted, this, &ofApp::blobDeleted);
+
     warper.setup();
     warper.activate();
+
+    lastBlobPos.x = 0;
+    lastBlobPos.y = 0;
+
+    //game assets
+
+    cityTex.loadImage("gedung1.png");
+    cityTex.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+
+    gedung1.setup(&cityTex);
+    gedung1.position.x = ofGetWidth()/2;
+    gedung1.position.y = 700;
+
+    explode.loadSound("explode.wav");
+
 }
 
 //--------------------------------------------------------------
@@ -52,12 +71,14 @@ void ofApp::update()
 
     if (newWebcamFrame)
         {
-            tracker.setParam(&trackerParam);
+            colorTracker.setParam(&trackerParam);
 
             ps3img.loadData(ps3eye.getPixelsRef());
-            tracker.processVidGrabber(&ps3eye);
+            colorTracker.processVidGrabber(&ps3eye);
 
-            contourFinder.findContours(tracker.processedImg, 20, (320*240)/3, 10, true);	// find holes
+            //contourFinder.findContours(colorTracker.processedImg, 20, (320*240)/3, 10, true);	// find holes
+
+            blobTracker.update(colorTracker.processedImg);
         }
 
 
@@ -71,8 +92,8 @@ void ofApp::draw()
 
     ofPoint pos = ofPoint((ofGetWidth()/2)-480,(ofGetHeight()/2)-120);
     ps3img.draw(pos.x, pos.y);
-    tracker.processedImg.draw( pos.x + 320,pos.y);
-    //contourFinder.draw(pos.x + 640, pos.y);
+    colorTracker.processedImg.draw( pos.x + 320,pos.y);
+//    contourFinder.draw(pos.x + 640, pos.y);
 
 
 //    if (warper.isActive() == false)
@@ -86,29 +107,37 @@ void ofApp::draw()
 
 //    }
 
-    for(int i = 0; i < contourFinder.nBlobs; i++) {
-        ofRectangle r = contourFinder.blobs.at(i).boundingRect;
+//    for(int i = 0; i < contourFinder.nBlobs; i++) {
+//        ofRectangle r = contourFinder.blobs.at(i).boundingRect;
 
-        ofVec4f screen_warped = warper.fromScreenToWarpCoord(pos.x + r.x, pos.y + r.y, 1);
-        r.x = screen_warped.x;
-        r.y = screen_warped.y;
-        //r.x += 320; r.y += 240;
-        //c.setHsb(i * 64, 255, 255);
-        //ofSetColor(c);
-        //ofRect(r);
+//        ofVec4f screen_warped = warper.fromScreenToWarpCoord(pos.x + r.x, pos.y + r.y, 1);
+//        r.x = screen_warped.x;
+//        r.y = screen_warped.y;
+//        //r.x += 320; r.y += 240;
+//        //c.setHsb(i * 64, 255, 255);
+//        //ofSetColor(c);
+//        //ofRect(r);
 
-        ofLine(r.x, 0.0, r.x, ofGetHeight());
-        ofLine(0.0, r.y, ofGetWidth(), r.y);
+//        ofLine(r.x, 0.0, r.x, ofGetHeight());
+//        ofLine(0.0, r.y, ofGetWidth(), r.y);
 
-       // ofLine(r.x, 0.0, r.x, ofGetHeight());
+//       // ofLine(r.x, 0.0, r.x, ofGetHeight());
 
-        ofRect(r);
-    }
+//        ofRect(r);
+//    }
 
+
+    blobTracker.draw(pos.x + 640,pos.y);
 
     warper.begin();
     warper.draw();
     warper.end();
+
+    gedung1.draw();
+
+
+            ofLine(lastBlobPos.x, 0.0, lastBlobPos.x, ofGetHeight());
+            ofLine(0.0, lastBlobPos.y, ofGetWidth(), lastBlobPos.y);
 }
 
 //--------------------------------------------------------------
@@ -180,8 +209,40 @@ void ofApp::keyPressed(int key)
 
     }
 
+
 //--------------------------------------------------------------
     void ofApp::dragEvent(ofDragInfo dragInfo)
+    {
+
+    }
+
+ //-------------------------------------------------------------
+
+
+    void ofApp::blobAdded(ofxBlob &_blob)
+    {
+
+        ofPoint pos = ofPoint((ofGetWidth()/2)-480,(ofGetHeight()/2)-120);
+
+        printf("blob added %f %f\n", _blob.centroid.x, _blob.centroid.y);
+
+        ofVec4f hitpos = warper.fromScreenToWarpCoord(pos.x + _blob.centroid.x*320, pos.y + _blob.centroid.y*240, 1);
+
+        lastBlobPos.x = hitpos.x;
+        lastBlobPos.y = hitpos.y;
+
+        if ( gedung1.hitTest(hitpos))
+        {
+            explode.play();
+        }
+    }
+
+    void ofApp::blobMoved(ofxBlob &_blob)
+    {
+
+    }
+
+    void ofApp::blobDeleted(ofxBlob &_blob)
     {
 
     }

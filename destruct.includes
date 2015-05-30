@@ -48,6 +48,8 @@
 ../../../addons/ofxMacamPs3Eye/src
 ../../../addons/ofxUI/src
 ../../../addons/ofxPS3EyeGrabber/src
+../../../addons/ofxBlobTracker/src
+
 src
 src/scene
 src/sensor
