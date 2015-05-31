@@ -1,15 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxUI.h"
-#include "ofxMacamPs3Eye.h"
-
-
-#include "colortracker.h"
-#include "ofxPS3EyeGrabber.h"
-#include "ofxGLWarper.h"
-#include "ofxBlobTracker.h"
-
+#include "calibration.h"
 
 #include "gedung.h"
 
@@ -31,35 +23,9 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 
-
-        void blobAdded(ofxBlob &_blob);
-        void blobMoved(ofxBlob &_blob);
-        void blobDeleted(ofxBlob &_blob);
-
-        //gui
-        ofxUISuperCanvas *gui0;
-
-        //webcam input
-       // ofVideoGrabber webcam;
-//       ofxMacamPs3Eye ps3eye;
-        ofxPS3EyeGrabber ps3eye;
-        ofTexture ps3img;
-        //ofImage ps3img;
+        Calibration calibration;
 
 
-        //color tracker module
-        ColorTracker colorTracker;
-        TrackerParam trackerParam;
-
-        //contour finder/blob
-        ofxCvContourFinder 	contourFinder;
-        //blob tracker
-        ofxBlobTracker blobTracker;
-
-        //warper module
-        ofxGLWarper warper;
-		
-        ofVec2f lastBlobPos;
 
         //game assets
 
