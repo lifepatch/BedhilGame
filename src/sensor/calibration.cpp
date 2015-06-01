@@ -591,41 +591,41 @@ void Calibration::processOSCMessage()
             ofxOscMessage m;
             receiver.getNextMessage(&m);
 
-            if(m.getAddress() ==  "/ps3_gain")
+            if(m.getAddress() ==  "/ps3/ps3_gain")
                 ps3_gain = m.getArgAsInt32(0);
 
-            else if(m.getAddress() ==  "/ps3_brightness")
+            else if(m.getAddress() ==  "/ps3/ps3_brightness")
                 ps3_brightness = m.getArgAsInt32(0);
 
-            else if(m.getAddress() ==  "/ps3_contrast")
+            else if(m.getAddress() ==  "/ps3/ps3_contrast")
                 ps3_contrast = m.getArgAsInt32(0);
 
-            else if(m.getAddress() ==  "/ps3_redbalance")
+            else if(m.getAddress() ==  "/ps3/ps3_redbalance")
                 ps3_redbalance = m.getArgAsInt32(0);
 
-            else if(m.getAddress() ==  "/ps3_bluebalance")
+            else if(m.getAddress() ==  "/ps3/ps3_bluebalance")
                 ps3_bluebalance = m.getArgAsInt32(0);
 
-            else if(m.getAddress() ==  "/ps3_exposure")
+            else if(m.getAddress() ==  "/ps3/ps3_exposure")
                 ps3_exposure = m.getArgAsInt32(0);
 
-            else if(m.getAddress() ==  "/ps3_hue")
+            else if(m.getAddress() ==  "/ps3/ps3_hue")
                 ps3_hue = m.getArgAsInt32(0);
 
-            else if(m.getAddress() ==  "/ps3_sharpness")
+            else if(m.getAddress() ==  "/ps3/ps3_sharpness")
                 ps3_sharpness = m.getArgAsInt32(0);
 
-            else if(m.getAddress() ==  "/hue")
-                trackerParam.tHue = m.getArgAsInt32(0);
+            else if(m.getAddress() ==  "/blob/hue")
+                trackerParam.tHue = m.getArgAsFloat(0);
 
-            else if(m.getAddress() ==  "/hue_threshold")
-                trackerParam.tHueThresh = m.getArgAsInt32(0);
+            else if(m.getAddress() ==  "/blob/hue_threshold")
+                trackerParam.tHueThresh = m.getArgAsFloat(0);
 
-            else if(m.getAddress() ==  "/saturation")
-                trackerParam.tSat = m.getArgAsInt32(0);
+            else if(m.getAddress() ==  "/blob/saturation")
+                trackerParam.tSat = m.getArgAsFloat(0);
 
-            else if(m.getAddress() ==  "/value")
-                trackerParam.tValue = m.getArgAsInt32(0);
+            else if(m.getAddress() ==  "/blob/value")
+                trackerParam.tValue = m.getArgAsFloat(0);
 
             else if(m.getAddress() ==  "/send_me_settings")
             {
@@ -633,61 +633,68 @@ void Calibration::processOSCMessage()
 
                 ofxOscMessage s;
 
-                s.setAddress("/ps3_brightness");
+
+                s.setAddress("/ps3/ps3_gain");
+                s.addIntArg(ps3_gain);
+                sender.sendMessage(s);
+                s.clear();
+
+
+                s.setAddress("/ps3/ps3_brightness");
                 s.addIntArg(ps3_brightness);
                 sender.sendMessage(s);
                 s.clear();
 
-                s.setAddress("/ps3_contrast");
+                s.setAddress("/ps3/ps3_contrast");
                 s.addIntArg(ps3_contrast);
                 sender.sendMessage(s);
                 s.clear();
 
-                s.setAddress("/ps3_redbalance");
+                s.setAddress("/ps3/ps3_redbalance");
                 s.addIntArg(ps3_redbalance);
                 sender.sendMessage(s);
                 s.clear();
 
-                s.setAddress("/ps3_bluebalance");
+                s.setAddress("/ps3/ps3_bluebalance");
                 s.addIntArg(ps3_bluebalance);
                 sender.sendMessage(s);
                 s.clear();
 
-                s.setAddress("/ps3_exposure");
+                s.setAddress("/ps3/ps3_exposure");
                 s.addIntArg(ps3_exposure);
                 sender.sendMessage(s);
                 s.clear();
 
-                s.setAddress("/ps3_hue");
+                s.setAddress("/ps3/ps3_hue");
                 s.addIntArg(ps3_hue);
                 sender.sendMessage(s);
                 s.clear();
 
-                s.setAddress("/ps3_sharpness");
+                s.setAddress("/ps3/ps3_sharpness");
                 s.addIntArg(ps3_sharpness);
                 sender.sendMessage(s);
                 s.clear();
 
 
-                s.setAddress("/hue");
-                s.addIntArg(hue);
+                s.setAddress("/blob/hue");
+                s.addFloatArg(trackerParam.tHue);
                 sender.sendMessage(s);
                 s.clear();
 
 
-                s.setAddress("/hue_threshold");
-                s.addIntArg(hue_threshold);
+                s.setAddress("/blob/hue_threshold");
+                s.addFloatArg(trackerParam.tHueThresh);
                 sender.sendMessage(s);
                 s.clear();
 
-                s.setAddress("/saturation");
-                s.addIntArg(saturation);
+                s.setAddress("/blob/saturation");
+                s.addFloatArg(trackerParam.tSat);
                 sender.sendMessage(s);
                 s.clear();
 
 
-                s.setAddress("/value");
-                s.addIntArg(value);
+                s.setAddress("/blob/value");
+                s.addFloatArg(trackerParam.tValue);
                 sender.sendMessage(s);
                 s.clear();
 
