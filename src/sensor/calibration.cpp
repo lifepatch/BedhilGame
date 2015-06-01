@@ -504,11 +504,8 @@ void Calibration::onKeyPressed(ofKeyEventArgs &data)
         case 'b':
             bDrawWhiteBg = !bDrawWhiteBg;
             break;
-        case 'W':
-            warper.activate();
-            break;
         case 'w':
-            warper.deactivate();
+            warper.toogleActive();
             break;
         default:
             break;
