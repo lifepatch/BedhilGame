@@ -7,6 +7,7 @@
 #include "ofxBlobTracker.h"
 #include "ofxUI.h"
 #include "ofxUIFBO.h"
+#include "ofxOsc.h"
 
 #include "colortracker.h"
 
@@ -96,6 +97,10 @@ public:
     bool isVisible();
     void saveSettings();
     void loadSettings();
+    void drawDotCalibration();
+    void onMousePressed(ofMouseEventArgs &data);
+    void setupGui3();
+    void processOSCMessage();
 private:
 
     bool ps3_bAutogain;
@@ -106,12 +111,25 @@ private:
     int ps3_redbalance;
     int ps3_bluebalance;
     int ps3_exposure;
+    int ps3_hue;
+    int ps3_sharpness;
 
 
     //gui
     vector<ofxUiCustomCanvas *> guis;
     map<string, ofxUiCustomCanvas *> guihash;
     bool guiVisible;
+    bool bDrawWhiteBg;
+    bool bGui1Visible;
+    bool bGui2Visible;
+    ofPoint calibDot;
+    bool bCalibDot;
+
+    //osc
+    ofxOscReceiver receiver;
+    ofxOscSender sender;
+
+    //ofxUIVec3f calibDot;
 
     ofxUiCustomCanvas *gui0;
     ofxUiCustomTextureViewer ps3_ui_texture;
@@ -127,6 +145,7 @@ private:
 
     //built in blob tracker
     ofxCvContourFinder 	contourFinder;
+    bool bDebugContour;
 
     //blob tracker addon
     ofxBlobTracker blobTracker;
