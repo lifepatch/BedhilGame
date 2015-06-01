@@ -588,30 +588,45 @@ void Calibration::processOSCMessage()
             ofxOscMessage m;
             receiver.getNextMessage(&m);
 
-            if(m.getAddress() ==  "/ps3/ps3_gain")
+            if(m.getAddress() ==  "/ps3/ps3_gain"){
                 ps3_gain = m.getArgAsInt32(0);
-
+                ps3eye.setGain(ps3_gain);
+            }
             else if(m.getAddress() ==  "/ps3/ps3_brightness")
+            {
                 ps3_brightness = m.getArgAsInt32(0);
-
+                ps3eye.setBrightness(ps3_brightness);
+            }
             else if(m.getAddress() ==  "/ps3/ps3_contrast")
+            {
                 ps3_contrast = m.getArgAsInt32(0);
-
+                ps3eye.setContrast(ps3_contrast);
+            }
             else if(m.getAddress() ==  "/ps3/ps3_redbalance")
+            {
                 ps3_redbalance = m.getArgAsInt32(0);
-
+                ps3eye.setRedBalance(ps3_redbalance);
+            }
             else if(m.getAddress() ==  "/ps3/ps3_bluebalance")
+            {
                 ps3_bluebalance = m.getArgAsInt32(0);
-
+                ps3eye.setBlueBalance(ps3_bluebalance);
+            }
             else if(m.getAddress() ==  "/ps3/ps3_exposure")
+            {
                 ps3_exposure = m.getArgAsInt32(0);
-
+                ps3eye.setExposure(ps3_exposure);
+            }
             else if(m.getAddress() ==  "/ps3/ps3_hue")
+            {
                 ps3_hue = m.getArgAsInt32(0);
-
+                ps3eye.setHue(ps3_hue);
+            }
             else if(m.getAddress() ==  "/ps3/ps3_sharpness")
+            {
                 ps3_sharpness = m.getArgAsInt32(0);
-
+                ps3eye.setSharpness(ps3_sharpness);
+            }
             else if(m.getAddress() ==  "/blob/hue")
                 trackerParam.tHue = m.getArgAsFloat(0);
 
