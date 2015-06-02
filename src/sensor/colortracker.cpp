@@ -96,6 +96,48 @@ void ColorTracker::processVidGrabber(ofVideoGrabber *webcam)
     processHSV(&sourceImg, imgParam.tHue, imgParam.tHueThresh, imgParam.tSat, imgParam.tValue);
 }
 
+
+void ColorTracker::processVidGrabber(ofPixels &_pix)
+{
+    ofxCvColorImage sourceImg;
+
+    int imgWidth =  _pix.getWidth(); //webcam->getWidth();
+    int imgHeight = _pix.getHeight();// webcam->getHeight();
+
+    sourceImg.allocate(imgWidth, imgHeight);
+
+    int channel_dst  = sourceImg.getPixelsRef().getBytesPerPixel();
+    int channel_src  = _pix.getBytesPerPixel();
+
+
+    unsigned char * pix =  _pix.getPixels();
+
+
+//    //source image
+    unsigned char * pix_dst = sourceImg.getPixelsRef().getPixels();
+
+    for (int x = 0 ; x < imgWidth; x++)
+    {
+        for (int y = 0 ; y < imgHeight; y++)
+        {
+            int arrpos_src = (y*channel_src*imgWidth) + x*channel_src;
+            int arrpos_dst = (y*channel_dst*imgWidth) + x*channel_dst;
+
+            pix_dst[arrpos_dst]   =  pix[arrpos_src+0];
+            pix_dst[arrpos_dst+1] =  pix[arrpos_src+1];
+            pix_dst[arrpos_dst+2] =  pix[arrpos_src+2];
+        }
+    }
+
+    //sourceImg.allocate(webcam->getWidth(), webcam->getHeight());
+    //sourceImg.setFromPixels(webcam->getPixels(), webcam->getWidth(), webcam->getHeight());
+
+
+
+    processHSV(&sourceImg, imgParam.tHue, imgParam.tHueThresh, imgParam.tSat, imgParam.tValue);
+}
+
+
 void ColorTracker::processVidGrabber(ofxPS3EyeGrabber *webcam)
 {
     ofxCvColorImage sourceImg;
