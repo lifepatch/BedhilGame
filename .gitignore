@@ -9,3 +9,6 @@ obj/osx/Release/src/scene/sceneEnding.o
 obj/osx/Release/src/sensor
 bin/*
 build/*
+bin.zip
+obj/*
+ofApp.o
