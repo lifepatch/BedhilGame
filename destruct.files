@@ -1,7 +1,13 @@
+addons.make
+
+src/base/Obj2D.h
+src/base/Obj2D.cpp
+src/element/gedung.h
+
 src/main.cpp
 src/ofApp.cpp
 src/ofApp.h
-addons.make
+
 src/scene/sceneOpening.h
 src/scene/sceneOpening.cpp
 src/scene/sceneLevel1.h
@@ -11,10 +17,16 @@ src/scene/sceneEnding.cpp
 
 src/sensor/colortracker.h
 src/sensor/colortracker.cpp
-src/Obj2D.h
-src/Obj2D.cpp
 src/gedung.h
+
 src/extend/ofxUIFBO.h
 src/extend/ofxUIFBO.cpp
+
 src/sensor/calibration.h
 src/sensor/calibration.cpp
+
+src/constants.h
+src/extend/ofxtiming.h
+src/element/ufo_boss.h
+src/element/joglo.h
+src/element/traktor.h

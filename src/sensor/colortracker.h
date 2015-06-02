@@ -27,6 +27,7 @@ public:
     void processVidGrabber(ofVideoGrabber * webcam);
     void processVidGrabber(ofxPS3EyeGrabber * webcam);
 
+    void processVidGrabber(ofPixels &_pix);
 };
 
 #endif // COLORTRACKER_H

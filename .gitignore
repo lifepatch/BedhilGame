@@ -7,3 +7,5 @@ obj/osx/Release/src/Obj2D.d
 bin/destruct.app
 obj/osx/Release/src/scene/sceneEnding.o
 obj/osx/Release/src/sensor
+bin/*
+build/*
