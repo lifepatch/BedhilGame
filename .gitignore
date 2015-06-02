@@ -12,3 +12,4 @@ build/*
 bin.zip
 obj/*
 ofApp.o
+destruct.creator.user
