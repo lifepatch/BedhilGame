@@ -396,7 +396,7 @@ void Calibration::onUpdate(ofEventArgs &data)
                 ps3eye_texture.loadData(ps3eye.getPixelsRef());
 
             if (bDebugContour)
-                contourFinder.findContours(colorTracker.processedImg, 20, (320*240)/3, 10, true);	// find holes
+                contourFinder.findContours(colorTracker.processedImg, blobMinArea, (340*240)/3, 10, false);	// find holes
 
             blobTracker.update(colorTracker.processedImg);
         }
