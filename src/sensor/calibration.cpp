@@ -784,6 +784,15 @@ void Calibration::processOSCMessage()
                 warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
             }
 
+            else if(m.getAddress() ==  "/save_settings")
+                saveSettings();
+            else if(m.getAddress() ==  "/load_settings")
+                loadSettings();
+            else if(m.getAddress() ==  "/warp_mode")
+                warper.toogleActive();
+            else if(m.getAddress() ==  "/white_background")
+                bDrawWhiteBg = !bDrawWhiteBg;
+
 
             else if(m.getAddress() ==  "/send_me_settings")
             {
