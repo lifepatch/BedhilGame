@@ -118,6 +118,7 @@ private:
     //gui
     vector<ofxUiCustomCanvas *> guis;
     map<string, ofxUiCustomCanvas *> guihash;
+    ofxUIColor guiColor;
     bool guiVisible;
     bool bDrawWhiteBg;
     bool bGui1Visible;

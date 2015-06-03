@@ -10,6 +10,7 @@ Calibration::Calibration()
     bCalibDot = false;
     blobMinArea = 20;
     bBlobTracker = true;
+    guiColor.setBrightness(90);
 }
 
 
@@ -58,6 +59,8 @@ void Calibration::setupGui1()
 {
     ofxUiCustomCanvas *gui = new ofxUiCustomCanvas("PS3EYECAM");
 
+
+    gui->setColorFill(guiColor);
     //gui->setDrawBack(false);
     gui->setName("ps3eyecam_gui");
     //gui->addLabel("ps3_eye parameter");
@@ -81,6 +84,7 @@ void Calibration::setupGui2()
 {
 
     ofxUiCustomCanvas *gui = new ofxUiCustomCanvas("BLOBTRACKER");
+    gui->setColorFill(guiColor);
 
     if(guis.size() > 0)
         {
@@ -114,6 +118,7 @@ void Calibration::setupGui3()
 {
 
     ofxUiCustomCanvas *gui = new ofxUiCustomCanvas("SETTINGS");
+    gui->setColorFill(guiColor);
 
     if(guis.size() > 0)
         {
