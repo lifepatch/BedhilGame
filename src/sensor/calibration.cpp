@@ -449,7 +449,7 @@ void Calibration::onDraw(ofEventArgs &data)
             warper.draw();
             warper.end();
 
-            ofDrawBitmapString("Calibration Mode: Press \"g\" to hide GUI, Press W to enter Warp Mode", windowCenter.x-300, ofGetHeight()-100);
+            //ofDrawBitmapString("Calibration Mode: Press \"g\" to hide GUI, Press W to enter Warp Mode", windowCenter.x-300, ofGetHeight()-100);
 
             if(bCalibDot)
                 {
