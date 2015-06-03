@@ -1,5 +1,16 @@
 #include "calibration.h"
 
+Calibration::Calibration()
+{
+    calibDot.set(0,0);
+    hide_calib = false;
+    bDrawWhiteBg = false;
+    guiVisible = true;
+    bDebugContour = false;
+    bCalibDot = false;
+    blobMinArea = 20;
+}
+
 
 void Calibration::setup()
 {
@@ -86,6 +97,8 @@ void Calibration::setupGui2()
     gui->addSlider("Hue Threshold", 0.0, 1.0, &trackerParam.tHueThresh);
     gui->addSlider("Saturation", 0.0, 1.0, &trackerParam.tSat);
     gui->addSlider("Value", 0.0, 1.0, &trackerParam.tValue);
+    gui->addSpacer();
+    gui->addIntSlider("blobMinArea", 0, 255, &blobMinArea);
 
     //gui->add2DPad("calib_dot", ofGetWidth())
     gui->autoSizeToFitWidgets();
@@ -252,18 +265,6 @@ void Calibration::guiEvent(ofxUIEventArgs &e)
 }
 
 
-
-Calibration::Calibration()
-{
-    calibDot.set(0,0);
-    hide_calib = false;
-    bDrawWhiteBg = false;
-    guiVisible = true;
-    bDebugContour = false;
-    bCalibDot = false;
-}
-
-
 void Calibration::drawDotCalibration()
 {
     ofPushStyle();
@@ -398,7 +399,7 @@ void Calibration::onUpdate(ofEventArgs &data)
             if (bDebugContour)
                 contourFinder.findContours(colorTracker.processedImg, blobMinArea, (340*240)/3, 10, false);	// find holes
 
-            blobTracker.update(colorTracker.processedImg);
+            blobTracker.update(colorTracker.processedImg, -1, blobMinArea);
         }
 
 
