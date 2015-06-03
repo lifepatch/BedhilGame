@@ -156,6 +156,7 @@ private:
 
     //warper module
     ofxGLWarper warper;
+    int warperActiveCorner;
 
     ofVec2f lastBlobPos;
 

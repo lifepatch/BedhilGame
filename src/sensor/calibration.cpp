@@ -11,6 +11,7 @@ Calibration::Calibration()
     blobMinArea = 20;
     bBlobTracker = true;
     guiColor.setBrightness(90);
+    warperActiveCorner = 0;
 }
 
 
@@ -651,6 +652,138 @@ void Calibration::processOSCMessage()
 
             else if(m.getAddress() ==  "/blob/blobMinArea")
                 blobMinArea = m.getArgAsFloat(0);
+
+            else if(m.getAddress() ==  "/warper/corner1")
+            {
+                warperActiveCorner = 0;
+
+                sender.setup(m.getRemoteIp(), 9091);
+                ofxOscMessage s;
+                ofPoint loc;
+                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                s.setAddress("/warper/warperXY");
+                s.addFloatArg(loc.y/ofGetHeight());
+                s.addFloatArg(loc.x/ofGetWidth());
+                sender.sendMessage(s);
+                s.clear();
+
+            }
+
+
+
+            else if(m.getAddress() ==  "/warper/corner2")
+            {
+                warperActiveCorner = 1;
+
+                sender.setup(m.getRemoteIp(), 9091);
+                ofxOscMessage s;
+                ofPoint loc;
+                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                s.setAddress("/warper/warperXY");
+                s.addFloatArg(loc.y/ofGetHeight());
+                s.addFloatArg(loc.x/ofGetWidth());
+                sender.sendMessage(s);
+                s.clear();
+
+            }
+            else if(m.getAddress() ==  "/warper/corner3")
+                {
+                warperActiveCorner = 2;
+
+                sender.setup(m.getRemoteIp(), 9091);
+                ofxOscMessage s;
+                ofPoint loc;
+                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                s.setAddress("/warper/warperXY");
+                s.addFloatArg(loc.y/ofGetHeight());
+                s.addFloatArg(loc.x/ofGetWidth());
+                sender.sendMessage(s);
+                s.clear();
+
+                }
+            else if(m.getAddress() ==  "/warper/corner4")
+                {
+                warperActiveCorner = 3;
+
+                sender.setup(m.getRemoteIp(), 9091);
+                ofxOscMessage s;
+                ofPoint loc;
+                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                s.setAddress("/warper/warperXY");
+                s.addFloatArg(loc.y/ofGetHeight());
+                s.addFloatArg(loc.x/ofGetWidth());
+                sender.sendMessage(s);
+                s.clear();
+
+                }
+            else if(m.getAddress() ==  "/warper/warperXY")
+            {
+                ofPoint loc;
+                loc.x = m.getArgAsFloat(1) * ofGetWidth();
+                loc.y = m.getArgAsFloat(0) * ofGetHeight();
+
+                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+//                switch (warperActiveCorner)
+//                {
+//                case 0:
+//                    warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+//                    break;
+//                case 1:
+//                    break;
+//                case 2:
+//                    break;
+//                case 3:
+//                    break;
+//                default:
+//                    break;
+//                }
+
+                //warper.setCorner( () , loc);
+            }
+
+
+            else if(m.getAddress() ==  "/key/up")
+            {
+                ofPoint loc;
+
+                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                loc.y -= 0.5;
+
+                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+            }
+
+
+            else if(m.getAddress() ==  "/key/down")
+            {
+                ofPoint loc;
+
+                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                loc.y += 0.5;
+
+                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+            }
+
+
+            else if(m.getAddress() ==  "/key/left")
+            {
+                ofPoint loc;
+
+                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                loc.x -= 0.5;
+
+                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+            }
+
+            else if(m.getAddress() ==  "/key/right")
+            {
+                ofPoint loc;
+
+                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                loc.x += 0.5;
+
+                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+            }
+
 
             else if(m.getAddress() ==  "/send_me_settings")
             {
