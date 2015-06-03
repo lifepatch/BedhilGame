@@ -640,6 +640,9 @@ void Calibration::processOSCMessage()
             else if(m.getAddress() ==  "/blob/value")
                 trackerParam.tValue = m.getArgAsFloat(0);
 
+            else if(m.getAddress() ==  "/blob/blobMinArea")
+                blobMinArea = m.getArgAsFloat(0);
+
             else if(m.getAddress() ==  "/send_me_settings")
             {
                 sender.setup(m.getRemoteIp(), 9091);
@@ -711,6 +714,10 @@ void Calibration::processOSCMessage()
                 sender.sendMessage(s);
                 s.clear();
 
+                s.setAddress("/blob/blobMinArea");
+                s.addFloatArg(blobMinArea);
+                sender.sendMessage(s);
+                s.clear();
 
             }
 
