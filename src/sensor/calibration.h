@@ -129,7 +129,6 @@ private:
     ofxOscReceiver receiver;
     ofxOscSender sender;
 
-    //ofxUIVec3f calibDot;
 
     ofxUiCustomCanvas *gui0;
     ofxUiCustomTextureViewer ps3_ui_texture;
@@ -149,6 +148,9 @@ private:
 
     //blob tracker addon
     ofxBlobTracker blobTracker;
+
+    //blob tracker shared param
+    int blobMinArea;
 
     //warper module
     ofxGLWarper warper;
