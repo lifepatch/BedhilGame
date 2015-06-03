@@ -30,3 +30,4 @@ src/extend/ofxtiming.h
 src/element/ufo_boss.h
 src/element/joglo.h
 src/element/traktor.h
+src/element/baliho.h
