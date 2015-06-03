@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxTiming.h"
+
 #include "calibration.h"
 
 #include "gedung.h"
@@ -25,7 +27,7 @@ class ofApp : public ofBaseApp{
 
         Calibration calibration;
 
-
+        ofxTiming timer1;
 
         //game assets
 

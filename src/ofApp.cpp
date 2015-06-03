@@ -3,23 +3,26 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-
+//
     ofSetFrameRate(30);
-    //ofEnableSmoothing();
-    ofSetVerticalSync(true);
-//    ofEnableAntiAliasing();
-
+//    //ofEnableSmoothing();
+//    ofSetVerticalSync(true);
+////    ofEnableAntiAliasing();
+//
     calibration.setup();
-
-//   webcam.setVerbose(true);
-    //  webcam.initGrabber(320,240);
-
-    // ps3eye.initGrabber(320,240);
-
-
-
-
-
+//
+////   webcam.setVerbose(true);
+//    //  webcam.initGrabber(320,240);
+//
+//    // ps3eye.initGrabber(320,240);
+//
+//    gmBossUfo.loadImage("assets/boss_ufo.png");
+//    gmBossUfo.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+//
+//
+//    gmBackgroundLandscape.loadImage("assets/background_landscape.png");
+//    gmBackgroundLandscape.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+//
 
 //   // gui0->addWidgetP
 
@@ -38,18 +41,20 @@ void ofApp::setup()
 //    gedung1.setup(&cityTex);
 //    gedung1.position.x = ofGetWidth()/2;
 //    gedung1.position.y = 700;
-
-//    explode.loadSound("explode.wav");
-
+//
+    explode.loadSound("sounds/explode.wav");
+  //  explode.loadSound("wew");
     //hide_calib = false;
-
+    timer1.setup(2);
+     explode.play();
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
 
-//    bool newWebcamFrame = false;
+
+    //    bool newWebcamFrame = false;
 
 ////    webcam.update();
 
@@ -70,8 +75,12 @@ void ofApp::update()
 
 ////            blobTracker.update(colorTracker.processedImg);
 //        }
-
-
+    if(timer1.tick())
+    {
+        explode.play();
+       printf("tick\n");
+    }
+//printf("elapsed: %f\n", ofGetElapsedTimef());
 
 }
 
@@ -79,7 +88,16 @@ void ofApp::update()
 void ofApp::draw()
 {
     ofBackground(0,0,0);
-//    ofPoint pos = ofPoint((ofGetWidth()/2)-480,(ofGetHeight()/2)-120);
+
+   // gmBackgroundLandscape.draw(0,ofGetHeight()-79, ofGetWidth() , 79 );
+
+
+    //ofPushMatrix();
+    //ofRotateZ(ofNoise(ofGetElapsedTimef()*1.5) * 200  );
+   // gmBossUfo.draw( ofMap( sin(TWO_PI * ofGetElapsedTimef() * 1/10 ), -1,1,0,ofGetWidth()-200) , ofNoise(ofGetElapsedTimef()*1.5) * 200);
+    //ofPopMatrix();
+
+    //    ofPoint pos = ofPoint((ofGetWidth()/2)-480,(ofGetHeight()/2)-120);
 
 //    if(!hide_calib){
 
@@ -145,27 +163,9 @@ void ofApp::keyPressed(int key)
 
     switch (key)
         {
-        case ' ':
-//            if (warper.isActive())
-//                {
-//                    warper.deactivate(); //once you are done with the Wrapping you should call this method, so it realeses the keyboard and mouse and stop processing the transformation matrixes.
-//                    // this will reduce the amount of precessing needed.
-//                }
-//            else
-//                {
-//                    warper.activate();
-//                }
-
-            break;
         case 't':
             ofToggleFullscreen();
             break;
-        case 'r':
-//            warper.setup();
-            break;
-        case 'h':
-//            hide_calib = !hide_calib;
-        break;
         default:
             break;
         }
