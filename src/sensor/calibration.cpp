@@ -143,9 +143,11 @@ void Calibration::setupGui3()
     gui->addToggle("debug_contour", &bDebugContour);
     gui->addToggle("blob_tracker", &bBlobTracker);
 
-    gui->addToggle("draw_whitebg",  &bDrawWhiteBg);
+    gui->addToggle("calib_cam",  &bDrawWhiteBg);
     gui->addToggle("calib_dot", &bCalibDot);
     gui->addToggle("warper_mode", false);
+
+
 
     gui->addSpacer();
 
@@ -401,9 +403,8 @@ void Calibration::onUpdate(ofEventArgs &data)
             colorTracker.setParam(&trackerParam);
             colorTracker.processVidGrabber(&ps3eye);
 
-            if (guihash["1"]->isVisible())
-                ps3eye_texture.loadData(ps3eye.getPixelsRef());
-
+            if (isVisible())
+               ps3eye_texture.loadData(ps3eye.getPixelsRef());
             if (bDebugContour)
                 contourFinder.findContours(colorTracker.processedImg, blobMinArea, (340*240)/3, 10, false);	// find holes
             if (bBlobTracker)
@@ -441,7 +442,7 @@ void Calibration::onDraw(ofEventArgs &data)
             float pos_cam_calib_x = windowCenter.x - (ps3eye_texture.getWidth()/2);
             float pos_cam_calib_y = windowCenter.y - (ps3eye_texture.getHeight()/2) ;
 
-            ps3eye_texture.draw(  pos_cam_calib_x , pos_cam_calib_y );
+            if(bDrawWhiteBg) ps3eye_texture.draw(  pos_cam_calib_x , pos_cam_calib_y );
 
             warper.begin();
             warper.draw();
