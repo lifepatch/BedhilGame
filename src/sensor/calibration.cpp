@@ -9,6 +9,7 @@ Calibration::Calibration()
     bDebugContour = false;
     bCalibDot = false;
     blobMinArea = 20;
+    bBlobTracker = true;
 }
 
 
@@ -135,6 +136,8 @@ void Calibration::setupGui3()
 
     gui->addSpacer();
     gui->addToggle("debug_contour", &bDebugContour);
+    gui->addToggle("blob_tracker", &bBlobTracker);
+
     gui->addToggle("draw_whitebg",  &bDrawWhiteBg);
     gui->addToggle("calib_dot", &bCalibDot);
     gui->addToggle("warper_mode", false);
@@ -398,8 +401,8 @@ void Calibration::onUpdate(ofEventArgs &data)
 
             if (bDebugContour)
                 contourFinder.findContours(colorTracker.processedImg, blobMinArea, (340*240)/3, 10, false);	// find holes
-
-            blobTracker.update(colorTracker.processedImg, -1, blobMinArea);
+            if (bBlobTracker)
+                blobTracker.update(colorTracker.processedImg, -1, blobMinArea);
         }
 
 

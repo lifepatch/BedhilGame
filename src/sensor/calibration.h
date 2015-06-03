@@ -148,6 +148,7 @@ private:
 
     //blob tracker addon
     ofxBlobTracker blobTracker;
+    bool bBlobTracker;
 
     //blob tracker shared param
     int blobMinArea;
