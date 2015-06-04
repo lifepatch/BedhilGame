@@ -7,11 +7,13 @@ void Obj2D::setup(ofImage * img ){
         width = img->width;
         height = img->height;
     }
+
 }
 
 
 
 void Obj2D::update(float dt){
+
     x += speed.x * dt;
     y += speed.y * dt;
 }

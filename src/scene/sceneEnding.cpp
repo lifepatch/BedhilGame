@@ -16,5 +16,10 @@ void sceneEnding::update() {
 }
 
 void sceneEnding::draw() {
+    ofSetColor(255, 0, 255);
+    ofRect(0, 0, ofGetWidth(), ofGetHeight());
 
+    ofSetColor(200);
+    y = (y+2) % ofGetHeight();
+    ofRect(0, y, ofGetWidth(), 10);
 }

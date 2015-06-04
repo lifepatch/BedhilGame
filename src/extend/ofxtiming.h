@@ -38,7 +38,7 @@ public:
 
     bool tick(bool _bOnce = false)
     {
-        printf("tick: %f\n", ofGetElapsedTimef() - start_timing);
+        //printf("tick: %f\n", ofGetElapsedTimef() - start_timing);
         if (first_call)
             {
                 resync();

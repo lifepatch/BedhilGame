@@ -2,26 +2,31 @@
     <Kind>40</Kind>
     <Name>blobtracker_gui</Name>
     <IsMinified>0</IsMinified>
-    <XPosition>100.000000000</XPosition>
-    <YPosition>186.000000000</YPosition>
+    <XPosition>212.000000000</XPosition>
+    <YPosition>0.000000000</YPosition>
 </Canvas>
 <Widget>
     <Kind>4</Kind>
     <Name>Hue</Name>
-    <Value>0.024630541</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Hue Threshold</Name>
-    <Value>0.172413796</Value>
+    <Value>0.280788183</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Saturation</Name>
-    <Value>0.157635465</Value>
+    <Value>0.029556651</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Value</Name>
-    <Value>0.000000000</Value>
+    <Value>0.162561581</Value>
+</Widget>
+<Widget>
+    <Kind>42</Kind>
+    <Name>blobMinArea</Name>
+    <Value>10</Value>
 </Widget>

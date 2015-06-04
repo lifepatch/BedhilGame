@@ -9,6 +9,11 @@
 
 #include "gedung.h"
 
+
+#include "sceneOpening.h"
+#include "sceneLevel1.h"
+#include "sceneEnding.h"
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -30,19 +35,22 @@ class ofApp : public ofBaseApp{
     private:
 
         //tracking calibration
-        Calibration calibration;
+        //Calibration calibration;
 
         //render pass brcosa settings
         ofxUICanvas *gui;
         ofFbo render_pass;
         ofxCustomContrast fxContrast;        
 
-        //game assets
-        ofImage gmBossUfo;
-        ofImage gmBackgroundLandscape;
-        ofImage cityTex;
+
 
         //sound
         ofSoundPlayer startup, launch, explode, empty;
         ofxTiming timer1;
+
+
+        //scene
+        ofxSceneManager sceneManager;
+
+
 };

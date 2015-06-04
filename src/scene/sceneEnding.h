@@ -28,6 +28,8 @@ public:
     void setup(ofPtr<ofxScene> pPreviousScene);
     void update();
     void draw();
+    int y=0;
+
 };
 
 #endif // SCENEENDING_H

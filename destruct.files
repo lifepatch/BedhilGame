@@ -32,3 +32,4 @@ src/element/joglo.h
 src/element/traktor.h
 src/element/baliho.h
 src/extend/ofxcustomcontrast.h
+src/element/particle.h

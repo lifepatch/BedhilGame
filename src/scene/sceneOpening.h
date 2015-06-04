@@ -13,6 +13,8 @@ class sceneOpening : public ofxScene {
         void setup(ofPtr<ofxScene> pPreviousScene);
 void update();
 void draw();
+void mousePressed(int x, int y, int button);
+ofImage gmOpening;
 };
 
 #endif // SCENEOPENING_H

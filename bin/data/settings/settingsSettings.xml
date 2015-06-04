@@ -12,7 +12,12 @@
 </Widget>
 <Widget>
     <Kind>2</Kind>
-    <Name>draw_whitebg</Name>
+    <Name>blob_tracker</Name>
+    <Value>1</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>calib_cam</Name>
     <Value>0</Value>
 </Widget>
 <Widget>
@@ -23,5 +28,5 @@
 <Widget>
     <Kind>2</Kind>
     <Name>warper_mode</Name>
-    <Value>1</Value>
+    <Value>0</Value>
 </Widget>
