@@ -31,3 +31,4 @@ src/element/ufo_boss.h
 src/element/joglo.h
 src/element/traktor.h
 src/element/baliho.h
+src/extend/ofxcustomcontrast.h

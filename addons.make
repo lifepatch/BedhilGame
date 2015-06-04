@@ -11,3 +11,4 @@ ofxMacamPs3Eye
 ofxUI
 ofxPS3EyeGrabber
 ofxBlobTracker
+ofxFX

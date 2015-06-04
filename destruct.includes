@@ -49,6 +49,8 @@
 ../../../addons/ofxUI/src
 ../../../addons/ofxPS3EyeGrabber/src
 ../../../addons/ofxBlobTracker/src
+../../../addons/ofxFX/src
+../../../addons/ofxFX/src/filters
 
 src
 src/scene
