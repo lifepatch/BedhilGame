@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxTiming.h"
 #include "ofxcustomcontrast.h"
+#include "ofxSceneManager.h"
 
 #include "calibration.h"
 
@@ -24,25 +25,24 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+        void exit();
 
+    private:
 
-        ofxUICanvas *gui;
-
+        //tracking calibration
         Calibration calibration;
 
-        ofxTiming timer1;
+        //render pass brcosa settings
+        ofxUICanvas *gui;
+        ofFbo render_pass;
+        ofxCustomContrast fxContrast;        
 
         //game assets
-        ofFbo render_pass;
-        ofxCustomContrast fxContrast;
-
         ofImage gmBossUfo;
         ofImage gmBackgroundLandscape;
         ofImage cityTex;
-        //Gedung gedung1;
 
         //sound
-
         ofSoundPlayer startup, launch, explode, empty;
-        void exit();
+        ofxTiming timer1;
 };
