@@ -405,7 +405,7 @@ void Calibration::onUpdate(ofEventArgs &data)
             colorTracker.processVidGrabber(&ps3eye);
 
             if (isVisible())
-               ps3eye_texture.loadData(ps3eye.getPixelsRef());
+                ps3eye_texture.loadData(ps3eye.getPixelsRef());
             if (bDebugContour)
                 contourFinder.findContours(colorTracker.processedImg, blobMinArea, (340*240)/3, 10, false);	// find holes
             if (bBlobTracker)
@@ -599,45 +599,46 @@ void Calibration::processOSCMessage()
             ofxOscMessage m;
             receiver.getNextMessage(&m);
 
-            if(m.getAddress() ==  "/ps3/ps3_gain"){
-                ps3_gain = m.getArgAsInt32(0);
-                ps3eye.setGain(ps3_gain);
-            }
+            if(m.getAddress() ==  "/ps3/ps3_gain")
+                {
+                    ps3_gain = m.getArgAsInt32(0);
+                    ps3eye.setGain(ps3_gain);
+                }
             else if(m.getAddress() ==  "/ps3/ps3_brightness")
-            {
-                ps3_brightness = m.getArgAsInt32(0);
-                ps3eye.setBrightness(ps3_brightness);
-            }
+                {
+                    ps3_brightness = m.getArgAsInt32(0);
+                    ps3eye.setBrightness(ps3_brightness);
+                }
             else if(m.getAddress() ==  "/ps3/ps3_contrast")
-            {
-                ps3_contrast = m.getArgAsInt32(0);
-                ps3eye.setContrast(ps3_contrast);
-            }
+                {
+                    ps3_contrast = m.getArgAsInt32(0);
+                    ps3eye.setContrast(ps3_contrast);
+                }
             else if(m.getAddress() ==  "/ps3/ps3_redbalance")
-            {
-                ps3_redbalance = m.getArgAsInt32(0);
-                ps3eye.setRedBalance(ps3_redbalance);
-            }
+                {
+                    ps3_redbalance = m.getArgAsInt32(0);
+                    ps3eye.setRedBalance(ps3_redbalance);
+                }
             else if(m.getAddress() ==  "/ps3/ps3_bluebalance")
-            {
-                ps3_bluebalance = m.getArgAsInt32(0);
-                ps3eye.setBlueBalance(ps3_bluebalance);
-            }
+                {
+                    ps3_bluebalance = m.getArgAsInt32(0);
+                    ps3eye.setBlueBalance(ps3_bluebalance);
+                }
             else if(m.getAddress() ==  "/ps3/ps3_exposure")
-            {
-                ps3_exposure = m.getArgAsInt32(0);
-                ps3eye.setExposure(ps3_exposure);
-            }
+                {
+                    ps3_exposure = m.getArgAsInt32(0);
+                    ps3eye.setExposure(ps3_exposure);
+                }
             else if(m.getAddress() ==  "/ps3/ps3_hue")
-            {
-                ps3_hue = m.getArgAsInt32(0);
-                ps3eye.setHue(ps3_hue);
-            }
+                {
+                    ps3_hue = m.getArgAsInt32(0);
+                    ps3eye.setHue(ps3_hue);
+                }
             else if(m.getAddress() ==  "/ps3/ps3_sharpness")
-            {
-                ps3_sharpness = m.getArgAsInt32(0);
-                ps3eye.setSharpness(ps3_sharpness);
-            }
+                {
+                    ps3_sharpness = m.getArgAsInt32(0);
+                    ps3eye.setSharpness(ps3_sharpness);
+                }
             else if(m.getAddress() ==  "/blob/hue")
                 trackerParam.tHue = m.getArgAsFloat(0);
 
@@ -654,135 +655,118 @@ void Calibration::processOSCMessage()
                 blobMinArea = m.getArgAsFloat(0);
 
             else if(m.getAddress() ==  "/warper/corner1")
-            {
-                warperActiveCorner = 0;
+                {
+                    warperActiveCorner = 0;
 
-                sender.setup(m.getRemoteIp(), 9091);
-                ofxOscMessage s;
-                ofPoint loc;
-                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
-                s.setAddress("/warper/warperXY");
-                s.addFloatArg(loc.y/ofGetHeight());
-                s.addFloatArg(loc.x/ofGetWidth());
-                sender.sendMessage(s);
-                s.clear();
+                    sender.setup(m.getRemoteIp(), 9091);
+                    ofxOscMessage s;
+                    ofPoint loc;
+                    loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                    s.setAddress("/warper/warperXY");
+                    s.addFloatArg(loc.y/ofGetHeight());
+                    s.addFloatArg(loc.x/ofGetWidth());
+                    sender.sendMessage(s);
+                    s.clear();
 
-            }
+                }
 
 
 
             else if(m.getAddress() ==  "/warper/corner2")
-            {
-                warperActiveCorner = 1;
+                {
+                    warperActiveCorner = 1;
 
-                sender.setup(m.getRemoteIp(), 9091);
-                ofxOscMessage s;
-                ofPoint loc;
-                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
-                s.setAddress("/warper/warperXY");
-                s.addFloatArg(loc.y/ofGetHeight());
-                s.addFloatArg(loc.x/ofGetWidth());
-                sender.sendMessage(s);
-                s.clear();
+                    sender.setup(m.getRemoteIp(), 9091);
+                    ofxOscMessage s;
+                    ofPoint loc;
+                    loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                    s.setAddress("/warper/warperXY");
+                    s.addFloatArg(loc.y/ofGetHeight());
+                    s.addFloatArg(loc.x/ofGetWidth());
+                    sender.sendMessage(s);
+                    s.clear();
 
-            }
+                }
             else if(m.getAddress() ==  "/warper/corner3")
                 {
-                warperActiveCorner = 2;
+                    warperActiveCorner = 2;
 
-                sender.setup(m.getRemoteIp(), 9091);
-                ofxOscMessage s;
-                ofPoint loc;
-                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
-                s.setAddress("/warper/warperXY");
-                s.addFloatArg(loc.y/ofGetHeight());
-                s.addFloatArg(loc.x/ofGetWidth());
-                sender.sendMessage(s);
-                s.clear();
+                    sender.setup(m.getRemoteIp(), 9091);
+                    ofxOscMessage s;
+                    ofPoint loc;
+                    loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                    s.setAddress("/warper/warperXY");
+                    s.addFloatArg(loc.y/ofGetHeight());
+                    s.addFloatArg(loc.x/ofGetWidth());
+                    sender.sendMessage(s);
+                    s.clear();
 
                 }
             else if(m.getAddress() ==  "/warper/corner4")
                 {
-                warperActiveCorner = 3;
+                    warperActiveCorner = 3;
 
-                sender.setup(m.getRemoteIp(), 9091);
-                ofxOscMessage s;
-                ofPoint loc;
-                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
-                s.setAddress("/warper/warperXY");
-                s.addFloatArg(loc.y/ofGetHeight());
-                s.addFloatArg(loc.x/ofGetWidth());
-                sender.sendMessage(s);
-                s.clear();
+                    sender.setup(m.getRemoteIp(), 9091);
+                    ofxOscMessage s;
+                    ofPoint loc;
+                    loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                    s.setAddress("/warper/warperXY");
+                    s.addFloatArg(loc.y/ofGetHeight());
+                    s.addFloatArg(loc.x/ofGetWidth());
+                    sender.sendMessage(s);
+                    s.clear();
 
                 }
             else if(m.getAddress() ==  "/warper/warperXY")
-            {
-                ofPoint loc;
-                loc.x = m.getArgAsFloat(1) * ofGetWidth();
-                loc.y = m.getArgAsFloat(0) * ofGetHeight();
-
-                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
-//                switch (warperActiveCorner)
-//                {
-//                case 0:
-//                    warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
-//                    break;
-//                case 1:
-//                    break;
-//                case 2:
-//                    break;
-//                case 3:
-//                    break;
-//                default:
-//                    break;
-//                }
-
-                //warper.setCorner( () , loc);
-            }
+                {
+                    ofPoint loc;
+                    loc.x = m.getArgAsFloat(1) * ofGetWidth();
+                    loc.y = m.getArgAsFloat(0) * ofGetHeight();
+                    warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+                }
 
 
             else if(m.getAddress() ==  "/key/up")
-            {
-                ofPoint loc;
+                {
+                    ofPoint loc;
 
-                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
-                loc.y -= 0.5;
+                    loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                    loc.y -= 0.5;
 
-                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
-            }
+                    warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+                }
 
 
             else if(m.getAddress() ==  "/key/down")
-            {
-                ofPoint loc;
+                {
+                    ofPoint loc;
 
-                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
-                loc.y += 0.5;
+                    loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                    loc.y += 0.5;
 
-                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
-            }
+                    warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+                }
 
 
             else if(m.getAddress() ==  "/key/left")
-            {
-                ofPoint loc;
+                {
+                    ofPoint loc;
 
-                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
-                loc.x -= 0.5;
+                    loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                    loc.x -= 0.5;
 
-                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
-            }
+                    warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+                }
 
             else if(m.getAddress() ==  "/key/right")
-            {
-                ofPoint loc;
+                {
+                    ofPoint loc;
 
-                loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
-                loc.x += 0.5;
+                    loc = warper.getCorner((ofxGLWarper::CornerLocation) warperActiveCorner);
+                    loc.x += 0.5;
 
-                warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
-            }
+                    warper.setCorner((ofxGLWarper::CornerLocation) warperActiveCorner, loc);
+                }
 
             else if(m.getAddress() ==  "/save_settings")
                 saveSettings();
@@ -795,82 +779,82 @@ void Calibration::processOSCMessage()
 
 
             else if(m.getAddress() ==  "/send_me_settings")
-            {
-                sender.setup(m.getRemoteIp(), 9091);
+                {
+                    sender.setup(m.getRemoteIp(), 9091);
 
-                ofxOscMessage s;
-
-
-                s.setAddress("/ps3/ps3_gain");
-                s.addIntArg(ps3_gain);
-                sender.sendMessage(s);
-                s.clear();
+                    ofxOscMessage s;
 
 
-                s.setAddress("/ps3/ps3_brightness");
-                s.addIntArg(ps3_brightness);
-                sender.sendMessage(s);
-                s.clear();
-
-                s.setAddress("/ps3/ps3_contrast");
-                s.addIntArg(ps3_contrast);
-                sender.sendMessage(s);
-                s.clear();
-
-                s.setAddress("/ps3/ps3_redbalance");
-                s.addIntArg(ps3_redbalance);
-                sender.sendMessage(s);
-                s.clear();
-
-                s.setAddress("/ps3/ps3_bluebalance");
-                s.addIntArg(ps3_bluebalance);
-                sender.sendMessage(s);
-                s.clear();
-
-                s.setAddress("/ps3/ps3_exposure");
-                s.addIntArg(ps3_exposure);
-                sender.sendMessage(s);
-                s.clear();
-
-                s.setAddress("/ps3/ps3_hue");
-                s.addIntArg(ps3_hue);
-                sender.sendMessage(s);
-                s.clear();
-
-                s.setAddress("/ps3/ps3_sharpness");
-                s.addIntArg(ps3_sharpness);
-                sender.sendMessage(s);
-                s.clear();
+                    s.setAddress("/ps3/ps3_gain");
+                    s.addIntArg(ps3_gain);
+                    sender.sendMessage(s);
+                    s.clear();
 
 
-                s.setAddress("/blob/hue");
-                s.addFloatArg(trackerParam.tHue);
-                sender.sendMessage(s);
-                s.clear();
+                    s.setAddress("/ps3/ps3_brightness");
+                    s.addIntArg(ps3_brightness);
+                    sender.sendMessage(s);
+                    s.clear();
+
+                    s.setAddress("/ps3/ps3_contrast");
+                    s.addIntArg(ps3_contrast);
+                    sender.sendMessage(s);
+                    s.clear();
+
+                    s.setAddress("/ps3/ps3_redbalance");
+                    s.addIntArg(ps3_redbalance);
+                    sender.sendMessage(s);
+                    s.clear();
+
+                    s.setAddress("/ps3/ps3_bluebalance");
+                    s.addIntArg(ps3_bluebalance);
+                    sender.sendMessage(s);
+                    s.clear();
+
+                    s.setAddress("/ps3/ps3_exposure");
+                    s.addIntArg(ps3_exposure);
+                    sender.sendMessage(s);
+                    s.clear();
+
+                    s.setAddress("/ps3/ps3_hue");
+                    s.addIntArg(ps3_hue);
+                    sender.sendMessage(s);
+                    s.clear();
+
+                    s.setAddress("/ps3/ps3_sharpness");
+                    s.addIntArg(ps3_sharpness);
+                    sender.sendMessage(s);
+                    s.clear();
 
 
-                s.setAddress("/blob/hue_threshold");
-                s.addFloatArg(trackerParam.tHueThresh);
-                sender.sendMessage(s);
-                s.clear();
-
-                s.setAddress("/blob/saturation");
-                s.addFloatArg(trackerParam.tSat);
-                sender.sendMessage(s);
-                s.clear();
+                    s.setAddress("/blob/hue");
+                    s.addFloatArg(trackerParam.tHue);
+                    sender.sendMessage(s);
+                    s.clear();
 
 
-                s.setAddress("/blob/value");
-                s.addFloatArg(trackerParam.tValue);
-                sender.sendMessage(s);
-                s.clear();
+                    s.setAddress("/blob/hue_threshold");
+                    s.addFloatArg(trackerParam.tHueThresh);
+                    sender.sendMessage(s);
+                    s.clear();
 
-                s.setAddress("/blob/blobMinArea");
-                s.addFloatArg(blobMinArea);
-                sender.sendMessage(s);
-                s.clear();
+                    s.setAddress("/blob/saturation");
+                    s.addFloatArg(trackerParam.tSat);
+                    sender.sendMessage(s);
+                    s.clear();
 
-            }
+
+                    s.setAddress("/blob/value");
+                    s.addFloatArg(trackerParam.tValue);
+                    sender.sendMessage(s);
+                    s.clear();
+
+                    s.setAddress("/blob/blobMinArea");
+                    s.addFloatArg(blobMinArea);
+                    sender.sendMessage(s);
+                    s.clear();
+
+                }
 
 
 
