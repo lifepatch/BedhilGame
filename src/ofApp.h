@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxTiming.h"
+#include "ofxcustomcontrast.h"
 
 #include "calibration.h"
 
@@ -25,16 +26,23 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 
+        ofxUICanvas *gui;
+
         Calibration calibration;
 
         ofxTiming timer1;
 
         //game assets
+        ofFbo render_pass;
+        ofxCustomContrast fxContrast;
 
+        ofImage gmBossUfo;
+        ofImage gmBackgroundLandscape;
         ofImage cityTex;
-        Gedung gedung1;
+        //Gedung gedung1;
 
         //sound
 
         ofSoundPlayer startup, launch, explode, empty;
+        void exit();
 };

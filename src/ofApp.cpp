@@ -3,6 +3,10 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+    ofToggleFullscreen();
+
+    render_pass.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    fxContrast.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
 //
     ofSetFrameRate(30);
 //    //ofEnableSmoothing();
@@ -16,12 +20,12 @@ void ofApp::setup()
 //
 //    // ps3eye.initGrabber(320,240);
 //
-//    gmBossUfo.loadImage("assets/boss_ufo.png");
-//    gmBossUfo.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+    gmBossUfo.loadImage("assets/boss_ufo.png");
+    gmBossUfo.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 //
 //
-//    gmBackgroundLandscape.loadImage("assets/background_landscape.png");
-//    gmBackgroundLandscape.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+    gmBackgroundLandscape.loadImage("assets/background_landscape.png");
+    gmBackgroundLandscape.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 //
 
 //   // gui0->addWidgetP
@@ -43,12 +47,29 @@ void ofApp::setup()
 //    gedung1.position.y = 700;
 //
     explode.loadSound("sounds/explode.wav");
-  //  explode.loadSound("wew");
+    //  explode.loadSound("wew");
     //hide_calib = false;
     timer1.setup(2);
-     explode.play();
+    explode.play();
+
+    gui = new ofxUICanvas("brcosa");
+
+
+    gui->addSlider("brightness",0,50, &fxContrast.brightness);
+    gui->addSlider("contrast",0,5, &fxContrast.contrast);
+    gui->addSlider("multiple",0,5, &fxContrast.multiple);
+
+    fxContrast.brightness = 6.5;
+    fxContrast.contrast = 1.0;
+    fxContrast.multiple = 1.0;
+
 }
 
+void ofApp::exit()
+{
+    //gui->saveSettings("settings.xml");
+    delete gui;
+}
 //--------------------------------------------------------------
 void ofApp::update()
 {
@@ -76,29 +97,48 @@ void ofApp::update()
 ////            blobTracker.update(colorTracker.processedImg);
 //        }
     if(timer1.tick())
-    {
-        explode.play();
-       printf("tick\n");
-    }
+        {
+            explode.play();
+            printf("tick\n");
+        }
 //printf("elapsed: %f\n", ofGetElapsedTimef());
-
+//contrast.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+    //  contrast.begin();
+    render_pass.begin();
     ofBackground(0,0,0);
-
-   // gmBackgroundLandscape.draw(0,ofGetHeight()-79, ofGetWidth() , 79 );
+//   post.begin();
+    gmBackgroundLandscape.draw(0,ofGetHeight()-79, ofGetWidth() , 79 );
 
 
     //ofPushMatrix();
     //ofRotateZ(ofNoise(ofGetElapsedTimef()*1.5) * 200  );
-   // gmBossUfo.draw( ofMap( sin(TWO_PI * ofGetElapsedTimef() * 1/10 ), -1,1,0,ofGetWidth()-200) , ofNoise(ofGetElapsedTimef()*1.5) * 200);
+    gmBossUfo.draw( ofMap( sin(TWO_PI * ofGetElapsedTimef() * 1/10 ), -1,1,0,ofGetWidth()-200) , ofNoise(ofGetElapsedTimef()*1.5) * 200);
+//  post.end();
     //ofPopMatrix();
-
+    //  contrast.end();
     //    ofPoint pos = ofPoint((ofGetWidth()/2)-480,(ofGetHeight()/2)-120);
+    render_pass.end();
 
+//fxTv.setRadius(ofMap( sin(TWO_PI * ofGetElapsedTimef() * 2 ), -1,1,0,20));// = 4;//1+ofMap( sin(TWO_PI * ofGetElapsedTimef() * 2 ), -1,1,0,1);
+//fxContrast.multiple = 1.0;
+//fxContrast.contrast = 1.0;
+
+//render_pass.draw(0,0);
+
+//fxTv.brightness = 2.0;
+
+    fxContrast.update();
+///*fxTv*/.update();
+
+
+    fxContrast << render_pass;
+
+    fxContrast.draw(0,0);
 //    if(!hide_calib){
 
 //    ps3img.draw(pos.x, pos.y, 320,240);
@@ -165,6 +205,9 @@ void ofApp::keyPressed(int key)
         {
         case 't':
             ofToggleFullscreen();
+            break;
+        case 'c':
+            gui->toggleVisible();
             break;
         default:
             break;
