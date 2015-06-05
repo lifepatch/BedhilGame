@@ -30,6 +30,9 @@ public:
     void draw();
     int y=0;
 
+    ofPoint tes;
+
+    void mousePressed(int x, int y, int button);
 };
 
 #endif // SCENEENDING_H

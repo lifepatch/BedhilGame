@@ -77,7 +77,7 @@ public:
     void setupGui2();
     void setupGui1();
 
-    void setup();
+    void setup(ofBaseApp *_app);
 
     //blob tracker addon events
     void blobAdded(ofxBlob &_blob);
@@ -103,6 +103,10 @@ public:
     void processOSCMessage();
 private:
 
+    //ofApp instance
+    ofBaseApp * app;
+
+    //ps3
     bool ps3_bAutogain;
     bool ps3_bWhiteBalance;
     int ps3_gain;
@@ -153,6 +157,7 @@ private:
 
     //blob tracker shared param
     int blobMinArea;
+    bool bEnableSendMouseEvent;
 
     //warper module
     ofxGLWarper warper;

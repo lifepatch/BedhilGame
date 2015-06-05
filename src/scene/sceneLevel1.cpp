@@ -16,6 +16,9 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
     gmImgBackgroundLandscape.loadImage("assets/game/landscape_combined.png");
     gmImgBackgroundLandscape.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
+    gmImgBackgroundAwan.loadImage("assets/game/awan.png");
+    gmImgBackgroundAwan.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+
     gmImgTopTitle.loadImage("assets/game/bedil_title.png");
     gmImgBossUfo.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
@@ -40,10 +43,21 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
     gmImgMart24.loadImage("assets/element/mart24.png");
     gmImgMart24.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-
     gmImgTraktor.loadImage("assets/element/traktor.png");
     gmImgTraktor.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
+
+    gmSndExplode.loadSound("explode1.wav");
+    gmSndLaser[0].loadSound("laser1.wav");
+    gmSndLaser[1].loadSound("laser2.aiff");
+
+    gmSndMusic[0].loadSound("bgmusic1.mp3");
+    gmSndMusic[0].setLoop(true);
+
+    gmSndMusic[1].loadSound("bgmusic2.mp3");
+    gmSndMusic[1].setLoop(true);
+
+    gmSndMusic[0].play();
 
     tmrBossFire.setup(0.8);
 
@@ -68,73 +82,86 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
         }
 
 
-
 }
 
 void sceneLevel1::update()
 {
 
-    ufo.update();
-
-    //printf("scene1 uodate\n");
-    if (tmrBossFire.tick())
-    {
-
-        float rnd = ofRandom(0.6);
-       // printf("rnd %f\n", rnd);
-        gmJoglo new_joglo;
-
-        if (rnd > 0.55)
-            {
-                new_joglo.setup(&gmImgCrane);
-            }
-        else if (rnd > 0.4)
-            {
-                new_joglo.setup(&gmImgPabrik);
-            }
-        else if (rnd > 0.3)
-            {
-                new_joglo.setup(&gmImgTraktor);
-
-            }
-        else if (rnd > 0.2)
-            {
-                new_joglo.setup(&gmImgHotel);
-
-            }
-        else if (rnd > 0.1)
-            {
-                new_joglo.setup(&gmImgMart24);
-            }
-        else
-            {
-                new_joglo.setup(&gmImgBaliho);
-            }
-
-        ofSeedRandom();
-
-        float ufo_center_x = ufo.getCenter().x;
-        float ufo_center_y = ufo.getCenter().y;
-
-        float dest_y =  landscape_line.getPointAtLength(ufo_center_x).y  - (new_joglo.height/2);
-
-        //new_joglo.setFromCenter(ufo_center_x, dest_y, new_joglo.width, new_joglo.height);
-
-        new_joglo.setFromCenter(ufo_center_x, ufo_center_y+40, new_joglo.width, new_joglo.height);
-        new_joglo.setDestination(dest_y + new_joglo.height/2 + (ofRandom(2)));
-
-        new_joglo.speed.y = ofRandom(100.0, 200.0);
-
-        gmVectorBuildings.push_back(new_joglo);
-
-        tmrBossFire.setInterval(ofRandom(0.2,1.5));
-    }
-
-
-    for(int i = 0; i < gmVectorBuildings.size(); i++)
+    if (state == PLAYING)
         {
-            gmVectorBuildings.at(i).update(0.033333);
+
+            ufo.update();
+
+            //UFO FIRE : TRUE when ready to fire
+            if (tmrBossFire.tick())
+                {
+
+                    float rnd = ofRandom(0.6);
+                    // printf("rnd %f\n", rnd);
+                    gmJoglo new_joglo;
+
+                    if (rnd > 0.55)
+                        {
+                            new_joglo.setup(&gmImgCrane);
+                        }
+                    else if (rnd > 0.4)
+                        {
+                            new_joglo.setup(&gmImgPabrik);
+                        }
+                    else if (rnd > 0.3)
+                        {
+                            new_joglo.setup(&gmImgTraktor);
+
+                        }
+                    else if (rnd > 0.2)
+                        {
+                            new_joglo.setup(&gmImgHotel);
+
+                        }
+                    else if (rnd > 0.1)
+                        {
+                            new_joglo.setup(&gmImgMart24);
+                        }
+                    else
+                        {
+                            new_joglo.setup(&gmImgBaliho);
+                        }
+
+
+                    ofPoint ufo_center = ufo.getCenter();
+
+                    float dest_y =  landscape_line.getPointAtLength(ufo_center.x).y  - (new_joglo.height/2);
+
+                    //new_joglo.setFromCenter(ufo_center_x, dest_y, new_joglo.width, new_joglo.height);
+
+                    new_joglo.setFromCenter(ufo_center.x, ufo_center.y+70, new_joglo.width, new_joglo.height);
+                    new_joglo.setDestination(dest_y + new_joglo.height/2 + (ofRandom(2)));
+
+                    new_joglo.speed.y = ofRandom(100.0, 200.0);
+                    new_joglo.speed.x = ufo.getSpeed() * 5;
+
+
+                    new_joglo.speed.y = new_joglo.speed.y - 500;
+
+
+                    gmVectorBuildings.push_back(new_joglo);
+
+                    tmrBossFire.setInterval(ofRandom(0.2,1.5));
+
+                    if (ofRandom(0,2) > 1)
+                        gmSndLaser[0].play();
+                    else
+                        gmSndLaser[1].play();
+                }
+
+
+            for(int i = 0; i < gmVectorBuildings.size(); i++)
+                {
+                    gmVectorBuildings.at(i).addGravity(40);
+                    gmVectorBuildings.at(i).update(0.033333);
+                }
         }
+
 
 
 }
@@ -144,27 +171,51 @@ void sceneLevel1::draw()
 
     ofBackground(0,0,0);
 
-    gmImgTopTitle.draw(0,10);
-    gmImgBackgroundLandscape.draw(0,ofGetHeight()-gmImgBackgroundLandscape.height);
 
-
-    ufo.draw();
-
-
-    for(int i = 0; i < gmVectorBuildings.size(); i++)
+    if (state == PLAYING)
         {
-            gmVectorBuildings.at(i).draw();
+
+            gmImgTopTitle.draw(0,10+40);
+            gmImgBackgroundLandscape.draw(0,ofGetHeight()-gmImgBackgroundLandscape.height);
+
+            gmImgBackgroundAwan.draw(689,387);
+            gmImgBackgroundAwan.draw(-134,447);
+
+
+            ufo.draw();
+
+
+            for(int i = 0; i < gmVectorBuildings.size(); i++)
+                {
+                    gmVectorBuildings.at(i).draw();
+                }
+
+
+            ofCircle( ufo.getCenter().x,  landscape_line.getPointAtLength( ufo.getCenter().x).y  + 4     ,10.0);
+
+
         }
-
-
-    ofCircle( ufo.getCenter().x,  landscape_line.getPointAtLength( ufo.getCenter().x).y  + 4     ,10.0);
-
 
 }
 
 void sceneLevel1::mousePressed(int x, int y, int button)
 {
+    printf("wew\n");
+    for(int i = 0; i < gmVectorBuildings.size(); i++)
+        {
+            if (gmVectorBuildings.at(i).inside(x,y))
+            {
+                 printf("inside\n");
+                gmSndExplode.play();
+            }
+        }
+}
 
+void sceneLevel1::willDraw()
+{
+    state = PLAYING;
+
+    ofSeedRandom();
 
 }
 
@@ -172,4 +223,7 @@ void sceneLevel1::willExit()
 {
     printf("exit\n");
     gmVectorBuildings.clear();
+    gmSndMusic[0].stop();
+    gmSndMusic[1].stop();
+
 }

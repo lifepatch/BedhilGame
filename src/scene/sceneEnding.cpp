@@ -16,10 +16,12 @@ void sceneEnding::update() {
 }
 
 void sceneEnding::draw() {
-    ofSetColor(255, 0, 255);
-    ofRect(0, 0, ofGetWidth(), ofGetHeight());
+    ofBackground(0,0,0);
+    ofCircle(tes,20);
+}
 
-    ofSetColor(200);
-    y = (y+2) % ofGetHeight();
-    ofRect(0, y, ofGetWidth(), 10);
+
+void sceneEnding::mousePressed(int x, int y, int button) {
+    tes.x = x;
+    tes.y = y;
 }

@@ -11,11 +11,20 @@ void Obj2D::setup(ofImage * img ){
 }
 
 
+void Obj2D::addGravity(float grav = 20){
+    force.y = force.y + grav;
+}
 
 void Obj2D::update(float dt){
 
+    speed.x = speed.x + force.x;
+    speed.y = speed.y + force.y;
+
     x += speed.x * dt;
     y += speed.y * dt;
+
+    force.x = 0;
+    force.y = 0;
 }
 
 
@@ -41,6 +50,12 @@ bool Obj2D::hitTestCircle(ofVec2f center, float radius){
     bool t4 = center.distance( getBottomRight() ) < radius;
     if (t4) return true;
     return false;
+}
+
+void Obj2D::addForce(float x, float y)
+{
+    force.x = force.x + x;
+    force.y = force.y + x;
 }
 
 

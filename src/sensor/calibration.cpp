@@ -12,11 +12,14 @@ Calibration::Calibration()
     bBlobTracker = true;
     guiColor.setBrightness(90);
     warperActiveCorner = 0;
+    bEnableSendMouseEvent = true;
 }
 
 
-void Calibration::setup()
+void Calibration::setup(ofBaseApp * _app)
 {
+    //init app instance
+    app = _app;
 
     enableAppEventCallbacks();
     enableKeyEventCallbacks();
@@ -35,6 +38,7 @@ void Calibration::setup()
     ps3_bluebalance = ps3eye.getBlueBalance();
     ps3_hue = ps3eye.getHue();
     ps3_sharpness = ps3eye.getSharpness();
+    ps3_exposure = ps3eye.getExposure();
 
     ps3_ui_processed_img.setup(&colorTracker.processedImg, &blobTracker);
     ps3_ui_texture.setTexture(&ps3eye_texture);
@@ -147,6 +151,7 @@ void Calibration::setupGui3()
     gui->addToggle("calib_cam",  &bDrawWhiteBg);
     gui->addToggle("calib_dot", &bCalibDot);
     gui->addToggle("warper_mode", false);
+    gui->addToggle("send_mouse_evt", &bEnableSendMouseEvent);
 
 
 
@@ -404,11 +409,13 @@ void Calibration::onUpdate(ofEventArgs &data)
             colorTracker.setParam(&trackerParam);
             colorTracker.processVidGrabber(&ps3eye);
 
-            if (isVisible())
+            if (isVisible()) //if calibration gui is visible
                 ps3eye_texture.loadData(ps3eye.getPixelsRef());
-            if (bDebugContour)
+
+            if (bDebugContour) //if show debug contour crosshair
                 contourFinder.findContours(colorTracker.processedImg, blobMinArea, (340*240)/3, 10, false);	// find holes
-            if (bBlobTracker)
+
+            if (bBlobTracker) //if ofxblobtracker enabled
                 blobTracker.update(colorTracker.processedImg, -1, blobMinArea);
         }
 
@@ -470,6 +477,8 @@ void Calibration::onDraw(ofEventArgs &data)
 
                             float calib_pos_x = (pos_w.x/ps3eye.getWidth()) * ofGetWidth();
                             float calib_pos_y = (pos_w.y/ps3eye.getHeight()) * ofGetHeight();
+
+                            printf("blob scaled %f %f\n", calib_pos_x, calib_pos_y);
 
                             //ofCircle(calib_pos_x, calib_pos_y, 2);
                             ofLine(calib_pos_x, 0.0, calib_pos_x, ofGetHeight());
@@ -562,20 +571,68 @@ void Calibration::toggleVisible()
 
 void Calibration::blobAdded(ofxBlob &_blob)
 {
+    if(bEnableSendMouseEvent == false) return;
 
     ofPoint pos = ofPoint((ofGetWidth()/2)-480,(ofGetHeight()/2)-120);
 
-    printf("blob added %f %f\n", _blob.centroid.x, _blob.centroid.y);
 
-//    ofVec4f hitpos = warper.fromScreenToWarpCoord(pos.x + _blob.centroid.x*320, pos.y + _blob.centroid.y*240, 1);
+    float pos_cam_calib_x = windowCenter.x - (ps3eye_texture.getWidth()/2);
+    float pos_cam_calib_y = windowCenter.y - (ps3eye_texture.getHeight()/2) ;
 
-//    lastBlobPos.x = hitpos.x;
-//    lastBlobPos.y = hitpos.y;
+      printf("blob added %f %f\n", _blob.centroid.x, _blob.centroid.y);
 
-//    if ( gedung1.hitTest(hitpos))
-//        {
-//            explode.play();
-//        }
+      ofVec4f pos_w = warper.fromScreenToWarpCoord(pos_cam_calib_x + _blob.centroid.x*320, pos_cam_calib_y + _blob.centroid.y*240, 1);
+
+
+      float calib_pos_x = (pos_w.x/ps3eye.getWidth()) * ofGetWidth();
+      float calib_pos_y = (pos_w.y/ps3eye.getHeight()) * ofGetHeight();
+
+
+      lastBlobPos.x = calib_pos_x;
+      lastBlobPos.y = calib_pos_y;
+
+         ofNotifyMousePressed(lastBlobPos.x, lastBlobPos.y, 0);
+
+
+  //    if ( gedung1.hitTest(hitpos))
+  //        {
+  //            explode.play();
+  //        }
+
+
+
+//    ofPoint pos = ofPoint((ofGetWidth()/2)-480,(ofGetHeight()/2)-120);
+
+//    printf("blob added %f %f\n", _blob.centroid.x, _blob.centroid.y);
+
+
+//    ofVec4f hitpos = warper.fromScreenToWarpCoord(
+//                pos.x + _blob.centroid.x* ps3eye.getWidth(),
+//                pos.y + _blob.centroid.y* ps3eye.getHeight(),
+//                1
+//            );
+
+    //ps3 image position for calibration
+//    float pos_cam_calib_x = windowCenter.x - (ps3eye_texture.getWidth()/2);
+//    float pos_cam_calib_y = windowCenter.y - (ps3eye_texture.getHeight()/2) ;
+
+
+//    ofRectangle r = _blob.boundingRect;
+
+//    ofVec4f pos_w = warper.fromScreenToWarpCoord(pos_cam_calib_x + r.x, pos_cam_calib_y + r.y, 1);
+
+//    float calib_pos_x = (pos_w.x/ps3eye.getWidth()) * ofGetWidth();
+//    float calib_pos_y = (pos_w.y/ps3eye.getHeight()) * ofGetHeight();
+
+//    ofMouseEventArgs test;
+//    test.x = calib_pos_x;
+//    test.y = calib_pos_y;
+//    test.button = 0;
+
+//    ofNotifyMousePressed(calib_pos_x, calib_pos_y, 0);
+
+//    printf("mouse pressed blob %f %f\n", calib_pos_x, calib_pos_y);
+
 }
 
 void Calibration::blobMoved(ofxBlob &_blob)

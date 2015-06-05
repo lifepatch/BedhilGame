@@ -35,7 +35,7 @@ class ofApp : public ofBaseApp{
     private:
 
         //tracking calibration
-        //Calibration calibration;
+        Calibration calibration;
 
         //render pass brcosa settings
         ofxUICanvas *gui;

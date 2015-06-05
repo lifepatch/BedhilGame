@@ -28,7 +28,12 @@ public:
 
     ofColor color;
     ofVec2f speed;
+    ofVec2f force;
+
     ofImage * tex;
 
+
+    void addForce(float x, float y);
+    void addGravity(float grav);
 };
 #endif /* defined(__emptyExample__Obj2D__) */

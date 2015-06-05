@@ -18,6 +18,9 @@
 
 class sceneLevel1 : public ofxScene {
 public:
+
+    enum gameState{PLAYING, START_SCREEN, END_LEVEL};
+
     void setup(ofPtr<ofxScene> pPreviousScene);
     void update();
     void draw();
@@ -34,15 +37,19 @@ public:
     //void gotMessage(ofMessage msg) {}
 
 //    virtual void willFadeIn() {}
-//    virtual void willDraw() {}
+    virtual void willDraw();
 //    virtual void willFadeOut() {}
     void willExit();
 
 private:
+    //state
+    gameState state;
+
     //game assets
     ofImage gmImgTopTitle;
     ofImage gmImgBackgroundLandscape;
     ofImage gmImgBackgroundLandscapeFar;
+    ofImage gmImgBackgroundAwan;
 
 
     ofImage gmImgBossUfo;
@@ -57,8 +64,12 @@ private:
     ofImage gmImgTraktor;
 
     ofxTiming tmrBossFire;
-
     gmUfoBoss ufo;
+
+
+    ofSoundPlayer gmSndExplode;
+    ofSoundPlayer gmSndLaser[2];
+    ofSoundPlayer gmSndMusic[2];
 
 
     //landscape target for boss

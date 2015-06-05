@@ -84,6 +84,12 @@ public:
     }
 
 
+    float getSpeed()
+    {
+        return rot;
+    }
+
+
 private:
     ofImage imgBossUfo;
     ofPixels imgRocket[2];
