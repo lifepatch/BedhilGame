@@ -81,6 +81,11 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
             landscape_line.addVertex(landscape_border.at(i));
         }
 
+    //gmSpriteRenderer = new ofxSpriteSheetRenderer(1, 10000, 0, 32);
+    gmSpriteRenderer = new ofxSpriteSheetRenderer(100, 100,0, 128);
+
+    gmSpriteRenderer->loadTexture("assets/game/explode.png", 256, GL_NEAREST);
+    ofEnableAlphaBlending();
 
 }
 
@@ -90,6 +95,26 @@ void sceneLevel1::update()
     if (state == PLAYING)
         {
 
+            //update sprites
+            gmSpriteRenderer->clear();
+            gmSpriteRenderer->update(ofGetElapsedTimeMillis());
+            if(gmSprites.size()>0) // if we have sprites
+                {
+                    for(int i=gmSprites.size()-1; i>=0; i--) //go through them
+                        {
+                            if(gmSprites[i]->animation.frame >= 15) //if they are past the bottom of the screen
+                                {
+                                    delete gmSprites[i]; //delete them
+                                    gmSprites.erase(gmSprites.begin()+i); // remove them from the vector
+                                }
+                            else
+                                {
+                                    gmSpriteRenderer->addCenteredTile(&gmSprites[i]->animation, gmSprites[i]->pos.x, gmSprites[i]->pos.y); // add them to the sprite renderer (add their animation at their position, there are a lot more options for what could happen here, scale, tint, rotation, etc, but the animation, x and y are the only variables that are required)
+                                }
+                        }
+                }
+
+            //update boss position
             ufo.update();
 
             //UFO FIRE : TRUE when ready to fire
@@ -175,7 +200,7 @@ void sceneLevel1::draw()
     if (state == PLAYING)
         {
 
-            gmImgTopTitle.draw(0,10+40);
+            gmImgTopTitle.draw(0,10+20);
             gmImgBackgroundLandscape.draw(0,ofGetHeight()-gmImgBackgroundLandscape.height);
 
             gmImgBackgroundAwan.draw(689,387);
@@ -193,21 +218,38 @@ void sceneLevel1::draw()
 
             ofCircle( ufo.getCenter().x,  landscape_line.getPointAtLength( ufo.getCenter().x).y  + 4     ,10.0);
 
-
+            gmSpriteRenderer->draw();
         }
 
 }
 
 void sceneLevel1::mousePressed(int x, int y, int button)
 {
-    printf("wew\n");
+
+
+
+
     for(int i = 0; i < gmVectorBuildings.size(); i++)
         {
             if (gmVectorBuildings.at(i).inside(x,y))
-            {
-                 printf("inside\n");
-                gmSndExplode.play();
-            }
+                {
+
+                 for(int j = 0; j < 4; j++)
+                 {
+                     basicSprite * newSprite = new basicSprite(); // create a new sprite
+                     newSprite->pos.x = x + ofRandom(-30,30);
+                     newSprite->pos.y = y + ofRandom(-70,70);
+                     newSprite->speed = ofRandom(1,1); //set its speed
+                     newSprite->animation = explodeAnim; //set its animation to the walk animation we declared
+
+                     gmSprites.push_back(newSprite);
+                 }
+
+
+                    printf("inside\n");
+                    gmSndExplode.play();
+
+                }
         }
 }
 
@@ -215,7 +257,7 @@ void sceneLevel1::willDraw()
 {
     state = PLAYING;
 
-    ofSeedRandom();
+//    ofSeedRandom();
 
 }
 

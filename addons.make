@@ -12,3 +12,4 @@ ofxUI
 ofxPS3EyeGrabber
 ofxBlobTracker
 ofxFX
+ofxSpriteSheetRenderer
