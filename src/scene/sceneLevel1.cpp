@@ -14,6 +14,7 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
     loadAssetToImg(&gmImgBackgroundLandscape,   "assets/game/landscape_combined.png");
     loadAssetToImg(&gmImgBackgroundAwan,        "assets/game/awan.png");
     loadAssetToImg(&gmImgTopTitle,              "assets/game/bedil_title.png");
+    loadAssetToImg(&gmImgTugu,                   "assets/element/tugu.png");
 
     //loadBadBuildingAsset(0,     &gmImgJoglo,                 "assets/element/rumah.png");
     //loadBadBuildingAsset(1,     &gmImgPohon,                 "assets/element/pohon.png");
@@ -32,6 +33,9 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
 
 
 
+    loadGoodBuildingAsset(0, gmGoodBuildingImgArr,  "assets/element/rumah.png");
+    loadGoodBuildingAsset(1, gmGoodBuildingImgArr,  "assets/element/pohon.png");
+
 
     gmSndExplode.loadSound("explode1.wav");
     gmSndLaser[0].loadSound("laser1.wav");
@@ -46,6 +50,7 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
     gmSndMusic[0].play();
 
     tmrBossFire.setup(0.8);
+    tmrMutantMode.setup(120);
 
 
     landscape_border.push_back(ofPoint(0,18));
@@ -73,6 +78,10 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
     gmSpriteRenderer->loadTexture("assets/game/explode.png", 256, GL_NEAREST);
     ofEnableAlphaBlending();
 
+
+    preloadGoodBuilding();
+
+
 }
 
 void sceneLevel1::loadAssetToImg(ofImage* _img, string _fileName)
@@ -87,6 +96,16 @@ void sceneLevel1::loadBadBuildingAsset(int id, ofImage * _img, string _fileName 
     gmBadBuildingAssetDef[id].img = &_img[id];
     gmBadBuildingAssetDef[id].name = "";
 }
+
+
+void sceneLevel1::loadGoodBuildingAsset(int id, ofImage * _img, string _fileName )
+{
+    loadAssetToImg(&_img[id], _fileName);
+    gmGoodBuildingAssetDef[id].img = &_img[id];
+    gmGoodBuildingAssetDef[id].name = "";
+}
+
+
 
 void sceneLevel1::updateSprites()
 {
@@ -108,6 +127,38 @@ void sceneLevel1::updateSprites()
                 }
         }
 }
+
+
+void sceneLevel1::preloadGoodBuilding()
+{
+
+
+
+    int max = 100;
+
+    for (int i = 0; i < ofGetWidth(); i+=100)
+    {
+        //printf("%i", i);
+        if (ofRandom(10) > 2)
+        {
+            int id = (int) ofRandom(0, GM_GOOD_ASSET_COUNT);
+
+            Obj2D * new_good_building  = new Obj2D();
+
+        new_good_building->setup(gmGoodBuildingAssetDef[id].img);
+        float dest_y =  landscape_line.getPointAtLength(i).y  - (new_good_building->height/1);
+        new_good_building->setPosition(i, dest_y);
+        gmVectorGoodBuildings.push_back(new_good_building);
+        }
+
+    }
+
+
+
+
+
+}
+
 
 void sceneLevel1::updateBossFire()
 {
@@ -156,7 +207,7 @@ void sceneLevel1::updateBossFire()
             //new_joglo->setFromCenter(ufo_center_x, dest_y, new_joglo->width, new_joglo->height);
 
             new_bad_building->setFromCenter(ufo_center.x, ufo_center.y+70, new_bad_building->width, new_bad_building->height);
-            new_bad_building->setDestination(dest_y + new_bad_building->height/2 + (ofRandom(-1,1)));
+            new_bad_building->setDestination(dest_y + new_bad_building->height/2 + (ofRandom(0.5)));
 
             new_bad_building->speed.y = ofRandom(100.0, 200.0);
             new_bad_building->speed.x = ufo.getSpeed() * 5;
@@ -255,6 +306,14 @@ void sceneLevel1::drawGroundedBuildings()
         }
 }
 
+void sceneLevel1::drawGoodBuildings()
+{
+    for(int i = 0; i < gmVectorGoodBuildings.size(); i++)
+        {
+            gmVectorGoodBuildings.at(i)->draw();
+        }
+}
+
 void sceneLevel1::draw()
 {
 
@@ -273,7 +332,14 @@ void sceneLevel1::draw()
 
             ufo.draw();
 
+            drawGoodBuildings();
+
+            gmImgTugu.draw(447,727-97);
+
+
             drawGroundedBuildings();
+
+
 
             drawBadBuildings();
 
@@ -318,7 +384,7 @@ void sceneLevel1::mousePressed(int x, int y, int button)
 void sceneLevel1::willDraw()
 {
     state = PLAYING;
-
+    preloadGoodBuilding();
 //    ofSeedRandom();
 
 }
@@ -331,13 +397,21 @@ void sceneLevel1::clearAllBuildings()
         }
 
 
-    for (std::vector< Obj2D * >::iterator _groundedBuilding = gmVectorBadBuildings.begin() ; _groundedBuilding != gmVectorBadBuildings.end(); ++_groundedBuilding)
+    for (std::vector< Obj2D * >::iterator _groundedBuilding = gmVectorGroundBuildings.begin() ; _groundedBuilding != gmVectorGroundBuildings.end(); ++_groundedBuilding)
         {
             delete (*_groundedBuilding);
         }
 
+
+    for (std::vector< Obj2D * >::iterator _goodBuilding = gmVectorGoodBuildings.begin() ; _goodBuilding != gmVectorGoodBuildings.end(); ++_goodBuilding)
+        {
+            delete (*_goodBuilding);
+        }
+
     gmVectorGroundBuildings.clear();
     gmVectorBadBuildings.clear();
+    gmVectorGoodBuildings.clear();
+
 }
 
 void sceneLevel1::willExit()

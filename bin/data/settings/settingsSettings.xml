@@ -2,8 +2,8 @@
     <Kind>40</Kind>
     <Name>settings</Name>
     <IsMinified>0</IsMinified>
-    <XPosition>836.000000000</XPosition>
-    <YPosition>-2.000000000</YPosition>
+    <XPosition>653.000000000</XPosition>
+    <YPosition>186.000000000</YPosition>
 </Canvas>
 <Widget>
     <Kind>2</Kind>
@@ -29,4 +29,9 @@
     <Kind>2</Kind>
     <Name>warper_mode</Name>
     <Value>0</Value>
+</Widget>
+<Widget>
+    <Kind>2</Kind>
+    <Name>send_mouse_evt</Name>
+    <Value>1</Value>
 </Widget>

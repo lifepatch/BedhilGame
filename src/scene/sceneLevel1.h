@@ -21,6 +21,9 @@
 
 #define GM_BAD_ASSET_COUNT 10
 
+#define GM_GOOD_ASSET_COUNT 2
+
+
 #define GM_PABRIK_ID 0
 #define GM_HOTEL_ID 1
 #define GM_CRANE_ID 2
@@ -91,6 +94,9 @@ public:
     void clearAllBuildings();
     void loadBadBuildingAsset(int id, ofImage *_img, string _fileName);
     void loadAssetToImg(ofImage* _img, string _fileName);
+    void drawGoodBuildings();
+    void loadGoodBuildingAsset(int id, ofImage *_img, string _fileName);
+    void preloadGoodBuilding();
 private:
     //state
     gameState state;
@@ -111,14 +117,21 @@ private:
     ofImage gmImgBaliho;
     ofImage gmImgMart24;
     ofImage gmImgTraktor;
+    ofImage gmImgTugu;
 
     gmAssetDef gmBadBuildingAssetDef[GM_BAD_ASSET_COUNT];
     ofImage gmBadBuildingImgArr[GM_BAD_ASSET_COUNT];
 
+    gmAssetDef gmGoodBuildingAssetDef[GM_GOOD_ASSET_COUNT];
+    ofImage gmGoodBuildingImgArr[GM_GOOD_ASSET_COUNT];
+
+
 
     gmTraktor traktor1;
 
+    ofxTiming tmrMutantMode;
     ofxTiming tmrBossFire;
+
     gmUfoBoss ufo;
 
 
@@ -131,6 +144,8 @@ private:
 
     //landscape target for boss
     vector <Obj2D *> gmVectorBadBuildings;
+    vector <Obj2D *> gmVectorGoodBuildings;
+
     vector <Obj2D *> gmVectorGroundBuildings;
 
     vector <ofPoint> landscape_border;

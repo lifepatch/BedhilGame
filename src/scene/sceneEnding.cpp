@@ -17,7 +17,7 @@ void sceneEnding::update() {
 
 void sceneEnding::draw() {
     ofBackground(0,0,0);
-    ofCircle(tes,20);
+  //  ofCircle(tes,20);
 }
 
 
