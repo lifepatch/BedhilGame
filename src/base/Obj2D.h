@@ -18,8 +18,15 @@ class Obj2D : public ofRectangle{
 public:
 
     void setup( ofImage * img = NULL);
-    void update(float dt);
-    void draw();
+    virtual void update(float dt);
+    virtual void draw();
+    virtual bool isDead(){return dead;};
+    virtual void setDead(bool _dead){dead = _dead;};
+    void setDestination(float y)
+    {
+        destY = y - height;
+    }
+
     void setSize();
     bool hitTest(ofVec2f);
     bool hitTest(ofRectangle);
@@ -32,8 +39,13 @@ public:
 
     ofImage * tex;
 
+    bool dead;
+    bool grounded;
+    float destY;
 
     void addForce(float x, float y);
     void addGravity(float grav);
+
+    bool isGrounded();
 };
 #endif /* defined(__emptyExample__Obj2D__) */

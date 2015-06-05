@@ -15,8 +15,18 @@
 #include "Obj2D.h"
 
 #include "joglo.h"
+#include "traktor.h"
 #include "ufo_boss.h"
 
+
+#define GM_BAD_ASSET_COUNT 10
+
+#define GM_PABRIK_ID 0
+#define GM_HOTEL_ID 1
+#define GM_CRANE_ID 2
+#define GM_BALIHO_ID 3
+#define GM_MART24_ID 4
+#define GM_TRAKTOR_ID 5
 
 
 //create a new animation. This could be done optinally in your code andnot as a static, just by saying animation_t walkAnimation; walkAnimation.index =0, walkAnimation.frame=0 etc. I find this method the easiest though
@@ -37,6 +47,12 @@ struct basicSprite {
     animation_t animation;	// a variable to store the animation this sprite uses
     ofPoint pos;			// the position on the screen this sprite will be drawn at
     float speed;			// the speed at which this sprite moves down the screen
+};
+
+struct gmAssetDef
+{
+    string name;
+    ofImage * img;
 };
 
 
@@ -65,6 +81,16 @@ public:
 //    virtual void willFadeOut() {}
     void willExit();
 
+    static bool checkDead(Obj2D *p);
+    void updateSprites();
+
+    void updateBossFire();
+    void updateBadBuildings();
+    void drawBadBuildings();
+    void drawGroundedBuildings();
+    void clearAllBuildings();
+    void loadBadBuildingAsset(int id, ofImage *_img, string _fileName);
+    void loadAssetToImg(ofImage* _img, string _fileName);
 private:
     //state
     gameState state;
@@ -86,6 +112,12 @@ private:
     ofImage gmImgMart24;
     ofImage gmImgTraktor;
 
+    gmAssetDef gmBadBuildingAssetDef[GM_BAD_ASSET_COUNT];
+    ofImage gmBadBuildingImgArr[GM_BAD_ASSET_COUNT];
+
+
+    gmTraktor traktor1;
+
     ofxTiming tmrBossFire;
     gmUfoBoss ufo;
 
@@ -98,10 +130,17 @@ private:
     vector <basicSprite *>  gmSprites;
 
     //landscape target for boss
-    vector <gmJoglo> gmVectorBuildings;
+    vector <Obj2D *> gmVectorBadBuildings;
+    vector <Obj2D *> gmVectorGroundBuildings;
 
     vector <ofPoint> landscape_border;
     ofPolyline landscape_line;
+
+
+    void addBadBuilding()
+    {
+
+    }
 };
 
 #endif // SCENELEVEL1_H

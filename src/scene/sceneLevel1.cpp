@@ -8,43 +8,29 @@
 
 void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
 {
-    //FirstScene* scene = dynamic_cast<FirstScene *>(previousScene.get());
-    //y = scene->y;
-    gmImgBossUfo.loadImage("assets/element/boss_ufo.png");
-    gmImgBossUfo.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-    gmImgBackgroundLandscape.loadImage("assets/game/landscape_combined.png");
-    gmImgBackgroundLandscape.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-    gmImgBackgroundAwan.loadImage("assets/game/awan.png");
-    gmImgBackgroundAwan.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+    loadAssetToImg(&gmImgBossUfo,               "assets/element/boss_ufo.png");
+    loadAssetToImg(&gmImgBackgroundLandscape,   "assets/game/landscape_combined.png");
+    loadAssetToImg(&gmImgBackgroundAwan,        "assets/game/awan.png");
+    loadAssetToImg(&gmImgTopTitle,              "assets/game/bedil_title.png");
 
-    gmImgTopTitle.loadImage("assets/game/bedil_title.png");
-    gmImgBossUfo.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+    //loadBadBuildingAsset(0,     &gmImgJoglo,                 "assets/element/rumah.png");
+    //loadBadBuildingAsset(1,     &gmImgPohon,                 "assets/element/pohon.png");
 
-    gmImgJoglo.loadImage("assets/element/rumah.png");
-    gmImgJoglo.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+    loadBadBuildingAsset(0,     gmBadBuildingImgArr,       "assets/element/pabrik.png");
+    loadBadBuildingAsset(1,     gmBadBuildingImgArr,       "assets/element/hotel.png");
+    loadBadBuildingAsset(2,     gmBadBuildingImgArr,       "assets/element/crane.png");
+    loadBadBuildingAsset(3,     gmBadBuildingImgArr,       "assets/element/baliho1.png");
+    loadBadBuildingAsset(4,     gmBadBuildingImgArr,       "assets/element/mart24.png");
+    loadBadBuildingAsset(5,     gmBadBuildingImgArr,       "assets/element/traktor.png");
 
-    gmImgPohon.loadImage("assets/element/pohon.png");
-    gmImgPohon.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+    loadBadBuildingAsset(6,     gmBadBuildingImgArr,       "assets/element/hotel2.png");
+    loadBadBuildingAsset(7,     gmBadBuildingImgArr,       "assets/element/hotel3.png");
+    loadBadBuildingAsset(8,     gmBadBuildingImgArr,       "assets/element/hotel4.png");
+    loadBadBuildingAsset(9,     gmBadBuildingImgArr,       "assets/element/traktor.png");
 
-    gmImgPabrik.loadImage("assets/element/pabrik.png");
-    gmImgPabrik.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-    gmImgHotel.loadImage("assets/element/hotel.png");
-    gmImgHotel.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
-
-    gmImgCrane.loadImage("assets/element/crane.png");
-    gmImgCrane.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
-
-    gmImgBaliho.loadImage("assets/element/baliho1.png");
-    gmImgBaliho.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
-
-    gmImgMart24.loadImage("assets/element/mart24.png");
-    gmImgMart24.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
-
-    gmImgTraktor.loadImage("assets/element/traktor.png");
-    gmImgTraktor.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
 
     gmSndExplode.loadSound("explode1.wav");
@@ -89,6 +75,138 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
 
 }
 
+void sceneLevel1::loadAssetToImg(ofImage* _img, string _fileName)
+{
+    _img->loadImage(_fileName);
+    _img->getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+}
+
+void sceneLevel1::loadBadBuildingAsset(int id, ofImage * _img, string _fileName )
+{
+    loadAssetToImg(&_img[id], _fileName);
+    gmBadBuildingAssetDef[id].img = &_img[id];
+    gmBadBuildingAssetDef[id].name = "";
+}
+
+void sceneLevel1::updateSprites()
+{
+    gmSpriteRenderer->clear();
+    gmSpriteRenderer->update(ofGetElapsedTimeMillis());
+    if(gmSprites.size()>0) // if we have sprites
+        {
+            for(int i=gmSprites.size()-1; i>=0; i--) //go through them
+                {
+                    if(gmSprites[i]->animation.frame >= 15) //if they are past the bottom of the screen
+                        {
+                            delete gmSprites[i]; //delete them
+                            gmSprites.erase(gmSprites.begin()+i); // remove them from the vector
+                        }
+                    else
+                        {
+                            gmSpriteRenderer->addCenteredTile(&gmSprites[i]->animation, gmSprites[i]->pos.x, gmSprites[i]->pos.y); // add them to the sprite renderer (add their animation at their position, there are a lot more options for what could happen here, scale, tint, rotation, etc, but the animation, x and y are the only variables that are required)
+                        }
+                }
+        }
+}
+
+void sceneLevel1::updateBossFire()
+{
+    if (tmrBossFire.tick())
+        {
+
+            float rnd = ofRandom(0.6);
+            // printf("rnd %f\n", rnd);
+            Obj2D * new_bad_building  = new Obj2D();
+
+            int id = (int) ofRandom(0, GM_BAD_ASSET_COUNT);
+
+//            if (rnd > 0.55)
+//                {
+//                    id = GM_CRANE_ID;
+//                }
+//            else if (rnd > 0.4)
+//                {
+//                    id = GM_PABRIK_ID;
+//                }
+//            else if (rnd > 0.3)
+//                {
+//                    id = GM_TRAKTOR_ID;
+
+//                }
+//            else if (rnd > 0.2)
+//                {
+//                    id = GM_HOTEL_ID;
+
+//                }
+//            else if (rnd > 0.1)
+//                {
+//                    id = GM_MART24_ID;
+//                }
+//            else
+//                {
+//                    id = GM_BALIHO_ID;
+//                }
+
+            new_bad_building->setup(gmBadBuildingAssetDef[id].img);
+
+            ofPoint ufo_center = ufo.getCenter();
+
+            float dest_y =  landscape_line.getPointAtLength(ufo_center.x).y  - (new_bad_building->height/2);
+
+            //new_joglo->setFromCenter(ufo_center_x, dest_y, new_joglo->width, new_joglo->height);
+
+            new_bad_building->setFromCenter(ufo_center.x, ufo_center.y+70, new_bad_building->width, new_bad_building->height);
+            new_bad_building->setDestination(dest_y + new_bad_building->height/2 + (ofRandom(-1,1)));
+
+            new_bad_building->speed.y = ofRandom(100.0, 200.0);
+            new_bad_building->speed.x = ufo.getSpeed() * 5;
+
+
+            new_bad_building->speed.y = new_bad_building->speed.y - 500;
+
+
+            gmVectorBadBuildings.push_back(new_bad_building);
+
+            tmrBossFire.setInterval(ofRandom(0.2,1.5));
+
+            if (ofRandom(0,2) > 1)
+                gmSndLaser[0].play();
+            else
+                gmSndLaser[1].play();
+        }
+}
+
+void sceneLevel1::updateBadBuildings()
+{
+
+    // delete and erase with a loop
+    vector<Obj2D *>::iterator it = gmVectorBadBuildings.begin();
+    for(; it != gmVectorBadBuildings.end();)
+        {
+            if( (*it)->isDead() )
+                {
+                    delete *it;
+                    it = gmVectorBadBuildings.erase(it);
+                }
+            else if ( (*it)->isGrounded() )
+                {
+                    gmVectorGroundBuildings.push_back(*it);
+                    it = gmVectorBadBuildings.erase(it);
+                }
+            else
+                ++it;
+        }
+
+
+    for(int i = 0; i < gmVectorBadBuildings.size(); i++)
+        {
+            gmVectorBadBuildings.at(i)->addGravity(40);
+            gmVectorBadBuildings.at(i)->update(0.033333);
+        }
+
+    //ofRemove(gmVectorBadBuildings, checkDead);
+}
+
 void sceneLevel1::update()
 {
 
@@ -96,99 +214,45 @@ void sceneLevel1::update()
         {
 
             //update sprites
-            gmSpriteRenderer->clear();
-            gmSpriteRenderer->update(ofGetElapsedTimeMillis());
-            if(gmSprites.size()>0) // if we have sprites
-                {
-                    for(int i=gmSprites.size()-1; i>=0; i--) //go through them
-                        {
-                            if(gmSprites[i]->animation.frame >= 15) //if they are past the bottom of the screen
-                                {
-                                    delete gmSprites[i]; //delete them
-                                    gmSprites.erase(gmSprites.begin()+i); // remove them from the vector
-                                }
-                            else
-                                {
-                                    gmSpriteRenderer->addCenteredTile(&gmSprites[i]->animation, gmSprites[i]->pos.x, gmSprites[i]->pos.y); // add them to the sprite renderer (add their animation at their position, there are a lot more options for what could happen here, scale, tint, rotation, etc, but the animation, x and y are the only variables that are required)
-                                }
-                        }
-                }
+            updateSprites();
 
             //update boss position
             ufo.update();
 
             //UFO FIRE : TRUE when ready to fire
-            if (tmrBossFire.tick())
-                {
+            updateBossFire();
 
-                    float rnd = ofRandom(0.6);
-                    // printf("rnd %f\n", rnd);
-                    gmJoglo new_joglo;
-
-                    if (rnd > 0.55)
-                        {
-                            new_joglo.setup(&gmImgCrane);
-                        }
-                    else if (rnd > 0.4)
-                        {
-                            new_joglo.setup(&gmImgPabrik);
-                        }
-                    else if (rnd > 0.3)
-                        {
-                            new_joglo.setup(&gmImgTraktor);
-
-                        }
-                    else if (rnd > 0.2)
-                        {
-                            new_joglo.setup(&gmImgHotel);
-
-                        }
-                    else if (rnd > 0.1)
-                        {
-                            new_joglo.setup(&gmImgMart24);
-                        }
-                    else
-                        {
-                            new_joglo.setup(&gmImgBaliho);
-                        }
+            //bad building drops from skies
+            updateBadBuildings();
 
 
-                    ofPoint ufo_center = ufo.getCenter();
-
-                    float dest_y =  landscape_line.getPointAtLength(ufo_center.x).y  - (new_joglo.height/2);
-
-                    //new_joglo.setFromCenter(ufo_center_x, dest_y, new_joglo.width, new_joglo.height);
-
-                    new_joglo.setFromCenter(ufo_center.x, ufo_center.y+70, new_joglo.width, new_joglo.height);
-                    new_joglo.setDestination(dest_y + new_joglo.height/2 + (ofRandom(2)));
-
-                    new_joglo.speed.y = ofRandom(100.0, 200.0);
-                    new_joglo.speed.x = ufo.getSpeed() * 5;
+        }//end is playing
 
 
-                    new_joglo.speed.y = new_joglo.speed.y - 500;
+
+}
 
 
-                    gmVectorBuildings.push_back(new_joglo);
-
-                    tmrBossFire.setInterval(ofRandom(0.2,1.5));
-
-                    if (ofRandom(0,2) > 1)
-                        gmSndLaser[0].play();
-                    else
-                        gmSndLaser[1].play();
-                }
+bool sceneLevel1::checkDead(Obj2D *p )
+{
+    return p->isDead();
+}
 
 
-            for(int i = 0; i < gmVectorBuildings.size(); i++)
-                {
-                    gmVectorBuildings.at(i).addGravity(40);
-                    gmVectorBuildings.at(i).update(0.033333);
-                }
+void sceneLevel1::drawBadBuildings()
+{
+    for(int i = 0; i < gmVectorBadBuildings.size(); i++)
+        {
+            gmVectorBadBuildings.at(i)->draw();
         }
+}
 
-
-
+void sceneLevel1::drawGroundedBuildings()
+{
+    for(int i = 0; i < gmVectorGroundBuildings.size(); i++)
+        {
+            gmVectorGroundBuildings.at(i)->draw();
+        }
 }
 
 void sceneLevel1::draw()
@@ -209,14 +273,11 @@ void sceneLevel1::draw()
 
             ufo.draw();
 
+            drawGroundedBuildings();
 
-            for(int i = 0; i < gmVectorBuildings.size(); i++)
-                {
-                    gmVectorBuildings.at(i).draw();
-                }
+            drawBadBuildings();
 
-
-            ofCircle( ufo.getCenter().x,  landscape_line.getPointAtLength( ufo.getCenter().x).y  + 4     ,10.0);
+//            ofCircle( ufo.getCenter().x,  landscape_line.getPointAtLength( ufo.getCenter().x).y  + 4     ,10.0);
 
             gmSpriteRenderer->draw();
         }
@@ -226,24 +287,22 @@ void sceneLevel1::draw()
 void sceneLevel1::mousePressed(int x, int y, int button)
 {
 
-
-
-
-    for(int i = 0; i < gmVectorBuildings.size(); i++)
+    for (std::vector< Obj2D * >::iterator _badBuilding = gmVectorBadBuildings.begin() ; _badBuilding != gmVectorBadBuildings.end(); ++_badBuilding)
         {
-            if (gmVectorBuildings.at(i).inside(x,y))
+            if (  (*_badBuilding)->inside(x,y) )
                 {
+                    (*_badBuilding)->setDead(true);
 
-                 for(int j = 0; j < 4; j++)
-                 {
-                     basicSprite * newSprite = new basicSprite(); // create a new sprite
-                     newSprite->pos.x = x + ofRandom(-30,30);
-                     newSprite->pos.y = y + ofRandom(-70,70);
-                     newSprite->speed = ofRandom(1,1); //set its speed
-                     newSprite->animation = explodeAnim; //set its animation to the walk animation we declared
+                    for(int j = 0; j < 4; j++)
+                        {
+                            basicSprite * newSprite = new basicSprite(); // create a new sprite
+                            newSprite->pos.x = x + ofRandom(-30,30);
+                            newSprite->pos.y = y + ofRandom(-70,70);
+                            newSprite->speed = ofRandom(1,1); //set its speed
+                            newSprite->animation = explodeAnim; //set its animation to the walk animation we declared
 
-                     gmSprites.push_back(newSprite);
-                 }
+                            gmSprites.push_back(newSprite);
+                        }
 
 
                     printf("inside\n");
@@ -251,6 +310,9 @@ void sceneLevel1::mousePressed(int x, int y, int button)
 
                 }
         }
+
+
+
 }
 
 void sceneLevel1::willDraw()
@@ -261,11 +323,28 @@ void sceneLevel1::willDraw()
 
 }
 
+void sceneLevel1::clearAllBuildings()
+{
+    for (std::vector< Obj2D * >::iterator _badBuilding = gmVectorBadBuildings.begin() ; _badBuilding != gmVectorBadBuildings.end(); ++_badBuilding)
+        {
+            delete (*_badBuilding);
+        }
+
+
+    for (std::vector< Obj2D * >::iterator _groundedBuilding = gmVectorBadBuildings.begin() ; _groundedBuilding != gmVectorBadBuildings.end(); ++_groundedBuilding)
+        {
+            delete (*_groundedBuilding);
+        }
+
+    gmVectorGroundBuildings.clear();
+    gmVectorBadBuildings.clear();
+}
+
 void sceneLevel1::willExit()
 {
-    printf("exit\n");
-    gmVectorBuildings.clear();
+
+    clearAllBuildings();
+
     gmSndMusic[0].stop();
     gmSndMusic[1].stop();
-
 }

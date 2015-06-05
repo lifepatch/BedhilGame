@@ -51,6 +51,19 @@ bool Obj2D::hitTestCircle(ofVec2f center, float radius){
     if (t4) return true;
     return false;
 }
+bool Obj2D::isGrounded()
+{
+            if (position.y <= destY)
+            {
+                return false;
+            }else{
+                return true;
+            }
+}
+
+
+
+
 
 void Obj2D::addForce(float x, float y)
 {

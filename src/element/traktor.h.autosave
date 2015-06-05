@@ -7,9 +7,9 @@
 
 class gmTraktor : public Obj2D{
 public:
-    static ofImage* imgElement;
+    
 private:
-
+    ofImage* imgElement;
 };
 
 //gmTraktor::imgElement = 0;
