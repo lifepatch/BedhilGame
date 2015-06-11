@@ -13,3 +13,4 @@ ofxPS3EyeGrabber
 ofxBlobTracker
 ofxFX
 ofxSpriteSheetRenderer
+ofxPostGlitch

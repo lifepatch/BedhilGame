@@ -8,7 +8,8 @@
 
 void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
 {
-
+//    fbo.allocate(ofGetWidth(), ofGetHeight());
+//    glitch.setup(&fbo);
 
     loadAssetToImg(&gmImgBossUfo,               "assets/element/boss_ufo.png");
     loadAssetToImg(&gmImgBackgroundLandscape,   "assets/game/landscape_combined.png");
@@ -47,10 +48,16 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
     gmSndMusic[1].loadSound("bgmusic2.mp3");
     gmSndMusic[1].setLoop(true);
 
+    gmSndMusic[2].loadSound("bgmusic_mutant.mp3");
+    gmSndMusic[2].setLoop(true);
+
+    soundMutant = false;
     gmSndMusic[0].play();
 
     tmrBossFire.setup(0.8);
     tmrMutantMode.setup(120);
+    tmrCutScene.setup(5);
+    tmrMutantScene.setup(60);
 
 
     landscape_border.push_back(ofPoint(0,18));
@@ -81,6 +88,8 @@ void sceneLevel1::setup(ofPtr<ofxScene> previousScene)
 
     preloadGoodBuilding();
 
+
+    state = PLAYING;
 
 }
 
@@ -137,21 +146,21 @@ void sceneLevel1::preloadGoodBuilding()
     int max = 100;
 
     for (int i = 0; i < ofGetWidth(); i+=100)
-    {
-        //printf("%i", i);
-        if (ofRandom(10) > 2)
         {
-            int id = (int) ofRandom(0, GM_GOOD_ASSET_COUNT);
+            //printf("%i", i);
+            if (ofRandom(10) > 2)
+                {
+                    int id = (int) ofRandom(0, GM_GOOD_ASSET_COUNT);
 
-            Obj2D * new_good_building  = new Obj2D();
+                    Obj2D * new_good_building  = new Obj2D();
 
-        new_good_building->setup(gmGoodBuildingAssetDef[id].img);
-        float dest_y =  landscape_line.getPointAtLength(i).y  - (new_good_building->height/1);
-        new_good_building->setPosition(i, dest_y);
-        gmVectorGoodBuildings.push_back(new_good_building);
+                    new_good_building->setup(gmGoodBuildingAssetDef[id].img);
+                    float dest_y =  landscape_line.getPointAtLength(i).y  - (new_good_building->height/1);
+                    new_good_building->setPosition(i, dest_y);
+                    gmVectorGoodBuildings.push_back(new_good_building);
+                }
+
         }
-
-    }
 
 
 
@@ -171,32 +180,6 @@ void sceneLevel1::updateBossFire()
 
             int id = (int) ofRandom(0, GM_BAD_ASSET_COUNT);
 
-//            if (rnd > 0.55)
-//                {
-//                    id = GM_CRANE_ID;
-//                }
-//            else if (rnd > 0.4)
-//                {
-//                    id = GM_PABRIK_ID;
-//                }
-//            else if (rnd > 0.3)
-//                {
-//                    id = GM_TRAKTOR_ID;
-
-//                }
-//            else if (rnd > 0.2)
-//                {
-//                    id = GM_HOTEL_ID;
-
-//                }
-//            else if (rnd > 0.1)
-//                {
-//                    id = GM_MART24_ID;
-//                }
-//            else
-//                {
-//                    id = GM_BALIHO_ID;
-//                }
 
             new_bad_building->setup(gmBadBuildingAssetDef[id].img);
 
@@ -219,6 +202,49 @@ void sceneLevel1::updateBossFire()
             gmVectorBadBuildings.push_back(new_bad_building);
 
             tmrBossFire.setInterval(ofRandom(0.2,1.5));
+
+            if (ofRandom(0,2) > 1)
+                gmSndLaser[0].play();
+            else
+                gmSndLaser[1].play();
+        }
+}
+
+
+
+void sceneLevel1::updateBossFireMutant()
+{
+    if (tmrBossFire.tick())
+        {
+
+            float rnd = ofRandom(0.6);
+            // printf("rnd %f\n", rnd);
+            Obj2D * new_bad_building  = new Obj2D();
+
+            int id = (int) ofRandom(0, GM_BAD_ASSET_COUNT);
+
+
+            new_bad_building->setup(gmBadBuildingAssetDef[id].img);
+
+            ofPoint ufo_center = ufo.getCenter();
+
+            float dest_y =  landscape_line.getPointAtLength(ufo_center.x).y  - (new_bad_building->height/2);
+
+            //new_joglo->setFromCenter(ufo_center_x, dest_y, new_joglo->width, new_joglo->height);
+
+            new_bad_building->setFromCenter(ufo_center.x, ufo_center.y+70, new_bad_building->width, new_bad_building->height);
+            new_bad_building->setDestination(dest_y + new_bad_building->height/2 + (ofRandom(0.5)));
+
+            new_bad_building->speed.y = ofRandom(100.0, 200.0);
+            new_bad_building->speed.x = ufo.getSpeed() * 5;
+
+
+            new_bad_building->speed.y = new_bad_building->speed.y - 10;
+
+
+            gmVectorBadBuildings.push_back(new_bad_building);
+
+            tmrBossFire.setInterval(ofRandom(0.1,0.3));
 
             if (ofRandom(0,2) > 1)
                 gmSndLaser[0].play();
@@ -261,23 +287,54 @@ void sceneLevel1::updateBadBuildings()
 void sceneLevel1::update()
 {
 
-    if (state == PLAYING)
+
+    switch (state)
         {
+        case PLAYING:
+                if (tmrMutantMode.tick())
+                {
+                    state = CUTSCENE;            //update sprites
+                    tmrCutScene.resync();
+                }
+                updateSprites();
+                //update boss position
+                ufo.update();
+                //UFO FIRE : TRUE when ready to fire
+                updateBossFire();
+                //bad building drops from skies
+                updateBadBuildings();
+            break;
+        case CUTSCENE:
+                if (tmrCutScene.tick())
+                {
+                    state = MUTANT;
+                    tmrMutantScene.resync();
+                }
+            break;
+        case MUTANT:
 
-            //update sprites
-            updateSprites();
 
-            //update boss position
-            ufo.update();
+                if (soundMutant == false)
+                {
+                    gmSndMusic[0].stop();
+                    gmSndMusic[2].play();
+                    soundMutant = true;
+                }
 
-            //UFO FIRE : TRUE when ready to fire
-            updateBossFire();
+                if (tmrMutantScene.tick()) this->exitScene();
+                //update sprites
+                updateSprites();
+                //update boss position
+                ufo.updateMutant();
+                //UFO FIRE : TRUE when ready to fire
+                updateBossFireMutant();
+                //bad building drops from skies
+                updateBadBuildings();
+            break;
+         default:
+            break;
+        }
 
-            //bad building drops from skies
-            updateBadBuildings();
-
-
-        }//end is playing
 
 
 
@@ -317,36 +374,56 @@ void sceneLevel1::drawGoodBuildings()
 void sceneLevel1::draw()
 {
 
+//    fbo.begin();
+    ofClear(0,0,0,255);
     ofBackground(0,0,0);
-
-
+    ofSetColor(255);
     if (state == PLAYING)
         {
 
-            gmImgTopTitle.draw(0,10+20);
+            gmImgTopTitle.draw(0,30);
+            ofRect(76.1,30+32, tmrMutantMode.progress() *152 , 10 );
             gmImgBackgroundLandscape.draw(0,ofGetHeight()-gmImgBackgroundLandscape.height);
-
             gmImgBackgroundAwan.draw(689,387);
             gmImgBackgroundAwan.draw(-134,447);
-
-
             ufo.draw();
-
             drawGoodBuildings();
-
             gmImgTugu.draw(447,727-97);
-
-
             drawGroundedBuildings();
-
-
-
             drawBadBuildings();
-
-//            ofCircle( ufo.getCenter().x,  landscape_line.getPointAtLength( ufo.getCenter().x).y  + 4     ,10.0);
-
             gmSpriteRenderer->draw();
         }
+    else if (state == CUTSCENE)
+        {
+            //gmImgCutscene.draw(0,0);
+           ufo.imgBossUfoMutant.draw(400,314);
+           // ofCircle(ofGetWidth()/2, ofGetHeight()/2, 20 - (tmrCutScene.progress()*20));
+
+        }
+    else if (state == MUTANT)
+        {
+            //ofClear(0,0,0,255);
+            //ofBackground(0,0,0);
+            gmImgTopTitle.draw(0,30);
+            gmImgBackgroundLandscape.draw(0,ofGetHeight()-gmImgBackgroundLandscape.height);
+            gmImgBackgroundAwan.draw(689,387);
+            gmImgBackgroundAwan.draw(-134,447);
+            ufo.drawMutant();
+            drawGoodBuildings();
+            gmImgTugu.draw(447,727-97);
+            drawGroundedBuildings();
+            drawBadBuildings();
+            gmSpriteRenderer->draw();
+//            glitch.setFx(OFXPOSTGLITCH_CONVERGENCE, true);
+//            glitch.setFx(OFXPOSTGLITCH_SWELL, true);
+
+//            glitch.generateFx();
+        }
+
+//    fbo.end();
+
+//    ofSetColor(255);
+//    fbo.draw(0,0);
 
 }
 
@@ -381,12 +458,14 @@ void sceneLevel1::mousePressed(int x, int y, int button)
 
 }
 
+
 void sceneLevel1::willDraw()
 {
     state = PLAYING;
-    preloadGoodBuilding();
-//    ofSeedRandom();
+    tmrMutantMode.resync();
 
+    ofSeedRandom();
+    preloadGoodBuilding();
 }
 
 void sceneLevel1::clearAllBuildings()
@@ -421,4 +500,6 @@ void sceneLevel1::willExit()
 
     gmSndMusic[0].stop();
     gmSndMusic[1].stop();
+    gmSndMusic[2].stop();
+
 }

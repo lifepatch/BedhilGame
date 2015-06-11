@@ -917,6 +917,11 @@ void Calibration::processOSCMessage()
 
         }
 }
+void Calibration::setBEnableSendMouseEvent(bool value)
+{
+    bEnableSendMouseEvent = value;
+}
+
 
 void Calibration::loadSettings()
 {

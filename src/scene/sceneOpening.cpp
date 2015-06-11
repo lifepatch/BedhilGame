@@ -9,7 +9,7 @@
 void sceneOpening::setup(ofPtr<ofxScene> previousScene) {
     //FirstScene* scene = dynamic_cast<FirstScene *>(previousScene.get());
     //y = scene->y;
-    gmOpening.loadImage("assets/scene/scene_1_opening.png");
+    gmOpening.loadImage("assets/cutscene/1.png");
 }
 
 void sceneOpening::update() {

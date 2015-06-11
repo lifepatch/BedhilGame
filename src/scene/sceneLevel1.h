@@ -13,7 +13,7 @@
 #include "ofxtiming.h"
 
 #include "Obj2D.h"
-
+#include "ofxPostGlitch.h"
 #include "joglo.h"
 #include "traktor.h"
 #include "ufo_boss.h"
@@ -62,7 +62,7 @@ struct gmAssetDef
 class sceneLevel1 : public ofxScene {
 public:
 
-    enum gameState{PLAYING, START_SCREEN, END_LEVEL};
+    enum gameState{PLAYING, CUTSCENE, MUTANT};
 
     void setup(ofPtr<ofxScene> pPreviousScene);
     void update();
@@ -97,6 +97,7 @@ public:
     void drawGoodBuildings();
     void loadGoodBuildingAsset(int id, ofImage *_img, string _fileName);
     void preloadGoodBuilding();
+    void updateBossFireMutant();
 private:
     //state
     gameState state;
@@ -119,6 +120,10 @@ private:
     ofImage gmImgTraktor;
     ofImage gmImgTugu;
 
+
+    //cutscene
+    ofImage gmImgCutscene;
+
     gmAssetDef gmBadBuildingAssetDef[GM_BAD_ASSET_COUNT];
     ofImage gmBadBuildingImgArr[GM_BAD_ASSET_COUNT];
 
@@ -130,14 +135,18 @@ private:
     gmTraktor traktor1;
 
     ofxTiming tmrMutantMode;
-    ofxTiming tmrBossFire;
+    ofxTiming tmrBossFire;    
+    ofxTiming tmrCutScene;
+    ofxTiming tmrMutantScene;
 
     gmUfoBoss ufo;
 
 
     ofSoundPlayer gmSndExplode;
     ofSoundPlayer gmSndLaser[2];
-    ofSoundPlayer gmSndMusic[2];
+    ofSoundPlayer gmSndMusic[3];
+
+    bool soundMutant;
 
     ofxSpriteSheetRenderer * gmSpriteRenderer;
     vector <basicSprite *>  gmSprites;
@@ -150,6 +159,8 @@ private:
 
     vector <ofPoint> landscape_border;
     ofPolyline landscape_line;
+    ofxPostGlitch glitch;
+    ofFbo fbo;
 
 
     void addBadBuilding()

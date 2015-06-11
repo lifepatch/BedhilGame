@@ -13,6 +13,7 @@
 #include "sceneOpening.h"
 #include "sceneLevel1.h"
 #include "sceneEnding.h"
+#include "sceneintro.h"
 
 class ofApp : public ofBaseApp{
 
@@ -33,6 +34,7 @@ class ofApp : public ofBaseApp{
         void exit();
 
     private:
+        ofSoundPlayer gmBgSnd;
 
         //tracking calibration
         Calibration calibration;
@@ -42,6 +44,8 @@ class ofApp : public ofBaseApp{
         ofFbo render_pass;
         ofxCustomContrast fxContrast;        
 
+        ofImage sceneSequenceImg[8];
+        sceneGeneric * sceneSequence[8];
 
 
         //sound
@@ -51,6 +55,8 @@ class ofApp : public ofBaseApp{
 
         //scene
         ofxSceneManager sceneManager;
+
+        bool playBg;
 
 
 };

@@ -84,6 +84,7 @@
 		8921F3541B1E081A00461962 /* usb-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8921F3411B1E081A00461962 /* usb-1.0.a */; };
 		8921F35C1B1E082B00461962 /* ofxBlobTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8921F3581B1E082B00461962 /* ofxBlobTracker.cpp */; };
 		8921F35D1B1E082B00461962 /* ofxContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8921F35A1B1E082B00461962 /* ofxContourFinder.cpp */; };
+		89AE67751B2285A3002DC2C9 /* ofxPostGlitch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89AE67731B2285A3002DC2C9 /* ofxPostGlitch.cpp */; };
 		8F5205AEF8861EF234F0651A /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 81967292BFC87A0144BD32C6 /* ofxOscSender.cpp */; };
 		9266028E1AECBB027ABF64D8 /* ofxEasing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 26E160699149D8AF609734A1 /* ofxEasing.cpp */; };
 		933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B40EDA85BEB63E46785BC29 /* tinyxml.cpp */; };
@@ -413,6 +414,8 @@
 		8921F3591B1E082B00461962 /* ofxBlobTracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBlobTracker.h; sourceTree = "<group>"; };
 		8921F35A1B1E082B00461962 /* ofxContourFinder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxContourFinder.cpp; sourceTree = "<group>"; };
 		8921F35B1B1E082B00461962 /* ofxContourFinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxContourFinder.h; sourceTree = "<group>"; };
+		89AE67731B2285A3002DC2C9 /* ofxPostGlitch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxPostGlitch.cpp; sourceTree = "<group>"; };
+		89AE67741B2285A3002DC2C9 /* ofxPostGlitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxPostGlitch.h; sourceTree = "<group>"; };
 		89C891DA1B1EFFE90032110A /* ofxcustomcontrast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxcustomcontrast.h; sourceTree = "<group>"; };
 		8A4DD23693DFAB8EC05FAA5D /* ofxCvShortImage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxCvShortImage.cpp; path = ../../../addons/ofxOpenCv/src/ofxCvShortImage.cpp; sourceTree = SOURCE_ROOT; };
 		8B30E93FD3D3475EED522A0E /* ofxOscBundle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOscBundle.h; path = ../../../addons/ofxOsc/src/ofxOscBundle.h; sourceTree = SOURCE_ROOT; };
@@ -1225,6 +1228,24 @@
 			path = ../../../addons/ofxBlobTracker/src;
 			sourceTree = "<group>";
 		};
+		89AE67711B2285A3002DC2C9 /* ofxPostGlitch */ = {
+			isa = PBXGroup;
+			children = (
+				89AE67721B2285A3002DC2C9 /* src */,
+			);
+			name = ofxPostGlitch;
+			sourceTree = "<group>";
+		};
+		89AE67721B2285A3002DC2C9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				89AE67731B2285A3002DC2C9 /* ofxPostGlitch.cpp */,
+				89AE67741B2285A3002DC2C9 /* ofxPostGlitch.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxPostGlitch/src;
+			sourceTree = "<group>";
+		};
 		8D82EBF7DBCF242EC80B1CFF /* ofxSceneManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -1380,6 +1401,7 @@
 				8921F2D61B1E081A00461962 /* ofxKinect */,
 				8921F3551B1E082B00461962 /* ofxBlobTracker */,
 				891531F41B1EF41900C35D36 /* ofxFX */,
+				89AE67711B2285A3002DC2C9 /* ofxPostGlitch */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -1840,6 +1862,7 @@
 				152EAECABD008D84AF7F27F8 /* ofxEasingLinear.cpp in Sources */,
 				6D7B53ED56654ABBF2FF13B1 /* ofxEasingQuad.cpp in Sources */,
 				85A41526FDFA1A8CDAEE81F7 /* ofxEasingQuart.cpp in Sources */,
+				89AE67751B2285A3002DC2C9 /* ofxPostGlitch.cpp in Sources */,
 				7E769097DE6561633305B24C /* ofxEasingQuint.cpp in Sources */,
 				FE278F5F783581237AE8ECB2 /* ofxEasingSine.cpp in Sources */,
 				32FC7731C1EF7B87E491C93D /* ofxTween.cpp in Sources */,

@@ -52,6 +52,7 @@
 ../../../addons/ofxFX/src
 ../../../addons/ofxFX/src/filters
 ../../../addons/ofxSpriteSheetRenderer/src
+../../../addons/ofxPostGlitch/src
 
 src
 src/scene

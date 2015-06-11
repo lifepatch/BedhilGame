@@ -101,6 +101,8 @@ public:
     void onMousePressed(ofMouseEventArgs &data);
     void setupGui3();
     void processOSCMessage();
+    void setBEnableSendMouseEvent(bool value);
+
 private:
 
     //ofApp instance

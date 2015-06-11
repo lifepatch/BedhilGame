@@ -10,8 +10,12 @@ public:
 
     gmUfoBoss()
     {
+
         imgBossUfo.loadImage("assets/element/boss_ufo.png");
         imgBossUfo.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+
+        imgBossUfoMutant.loadImage("assets/element/boss_ufo_mutant.png");
+        imgBossUfoMutant.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
         width = imgBossUfo.width;
         height = imgBossUfo.height;
@@ -44,6 +48,56 @@ public:
         position.y =  (ofNoise(ofGetElapsedTimef()*1.5) * 200) -80;
 
         rot  = position.x - prevX;
+
+    }
+
+
+    void updateMutant()
+    {
+
+        float deaccel = 2;
+        float ufo_x = ofMap( sin(TWO_PI * ofGetElapsedTimef() * 1/deaccel ), -1,1,50,ofGetWidth()-50) - halfWidth;
+        float tracker_x = ufo_x + halfWidth;
+
+        position.x = ufo_x;
+        position.y =  (ofNoise(ofGetElapsedTimef()*1.5) * 200) -80;
+
+        rot  = position.x - prevX;
+
+    }
+
+    void drawMutant()
+    {
+        ofPushMatrix();
+        ofTranslate(position.x + halfWidth, position.y + halfHeight);
+            ofPushMatrix();
+            if(position.x > prevX)
+                {
+                    glRotatef(2*rot,0,0,1);
+                }
+            else
+                {
+                    glRotatef(2*rot,0,0,1);
+                }
+
+            imgBossUfoMutant.draw(- imgBossUfoMutant.width/2, - imgBossUfoMutant.height/2);
+
+
+//            if(tmrRocket.tick())
+//                {
+//                    texRocket[0].draw(-53.5, 52);
+//                }
+//            else
+//                {
+//                    texRocket[1].draw(-53.5, 52);
+//                }
+
+            ofPopMatrix();
+        ofPopMatrix();
+
+        prevX = position.x;
+
+
 
     }
 
@@ -88,10 +142,12 @@ public:
     {
         return rot;
     }
+    ofImage imgBossUfo;
+    ofImage imgBossUfoMutant;
 
 
 private:
-    ofImage imgBossUfo;
+
     ofPixels imgRocket[2];
     ofTexture texRocket[2];
     ofxTiming tmrRocket;
